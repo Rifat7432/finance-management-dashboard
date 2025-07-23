@@ -36,12 +36,12 @@ const financeChartConfig = {
 
 export function FinanceOverviewChart() {
   return (
-    <Card className="justify-between">
+    <Card className="justify-between h-[680px]">
       <CardHeader>
         <CardTitle>Finance Overview</CardTitle>
         <div className="text-3xl font-bold mb-2">£2450</div>
 
-        <div className="space-y-1 mb-4">
+        <div className="space-y-4 my-4">
           {/* Reduced spacing to mb-4 */}
           <div className="flex justify-between">
             <span className="text-muted-foreground">Subscription</span>
@@ -54,7 +54,7 @@ export function FinanceOverviewChart() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 mb-10">
+      <CardContent className="p-4">
         {/* Removed space-y-4 and replaced with padding */}
 
         <ChartContainer config={financeChartConfig} style={{ padding: 0 }}>

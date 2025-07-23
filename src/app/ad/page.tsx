@@ -41,13 +41,14 @@ const categories = ["All", "Budget", "Debt", "Saving"];
 const videos = Array.from({ length: 6 }, (_, i) => ({
   id: `${i + 1}`,
   title: "How to create a monthly budget",
-  duration: "5min",
+  startDate: "21 July 2025",
+  endDate: "31 July 2025",
   thumbnail:
     "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Dashborad2-oouHFm0oHl1paUZDkYcZbNbyyi3VFw.png",
   category: "Budget",
 }));
 
-export default function ContentManagement() {
+export default function AdManagement() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
@@ -75,30 +76,47 @@ export default function ContentManagement() {
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-md">
-              <DialogTitle/>
+              <DialogTitle />
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="caption">Video Caption</Label>
+                  <Label htmlFor="caption">Campaign Name</Label>
                   <Input
                     id="caption"
-                    placeholder="Enter video caption..."
+                    placeholder="Campaign Name"
                     className="w-full my-2"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="category">Video Category</Label>
-                  <Select>
-                    <SelectTrigger className="w-full my-2">
-                      <SelectValue placeholder="Budget" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="budget">Budget</SelectItem>
-                      <SelectItem value="debt">Debt</SelectItem>
-                      <SelectItem value="saving">Saving</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="category">Ads Duration</Label>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Select>
+                        <SelectTrigger className="w-full my-2">
+                          <SelectValue placeholder="Start Date" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="budget">Budget</SelectItem>
+                          <SelectItem value="debt">Debt</SelectItem>
+                          <SelectItem value="saving">Saving</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Select>
+                        <SelectTrigger className="w-full my-2">
+                          <SelectValue placeholder="End Date" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="budget">Budget</SelectItem>
+                          <SelectItem value="debt">Debt</SelectItem>
+                          <SelectItem value="saving">Saving</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
                 </div>
-                <UploadFile caption="Select Video to Upload"/>
+
+                <UploadFile caption="Drag & Drop to Upload" />
                 <Button className="w-full">Save</Button>
               </div>
             </DialogContent>
@@ -117,21 +135,21 @@ export default function ContentManagement() {
                 className="w-full h-40 object-cover"
               />
               <CardContent className="p-4 space-y-3">
-                <h3 className="text-lg font-semibold leading-tight">
+                <h3 className="text-2xl font-bold leading-tight">
                   {video.title}
                 </h3>
                 <div className="flex justify-between items-center border-b border-[#BFBFBF] pb-2">
-                  <div className="flex items-center text-sm text-muted-foreground gap-2">
-                    <Clock className="w-4 h-4" />
-                    <span>{video.duration}</span>
+                  <div className="flex items-center text-sm gap-2 text-[#000000]">
+                    <p>Ads Duration: </p>
+                    <p>
+                      <span>{video.startDate}</span>-
+                      <span>{video.endDate}</span>
+                    </p>
                   </div>
-                  <button className="h-10 w-10 cursor-pointer hover:bg-accent rounded-full flex items-center justify-center">
-                    <PlayCircle size={32} />
-                  </button>
                 </div>
 
                 <div className="flex items-center justify-between pt-2">
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 text-[#999999]">
                     <Button variant="ghost" size="icon" className="h-8 w-8">
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -146,7 +164,7 @@ export default function ContentManagement() {
         </div>
 
         {/* Pagination */}
-    <Pagination/>
+        <Pagination />
       </div>
     </DashboardLayout>
   );

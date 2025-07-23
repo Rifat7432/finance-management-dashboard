@@ -22,7 +22,7 @@ const navigation = [
   { name: "Subscriptions", href: "/subscriptions", icon: CreditCard },
   { name: "Content Management", href: "/content", icon: Video },
   { name: "Notifications", href: "/notifications", icon: Bell },
-  { name: "Admin Panel Access", href: "/admin", icon: Settings },
+  { name: "Ad Management", href: "/ad", icon: Settings },
 ];
 
 export function Sidebar() {

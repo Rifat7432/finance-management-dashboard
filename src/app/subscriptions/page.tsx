@@ -4,12 +4,7 @@ import { useState } from "react";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -29,6 +24,7 @@ import {
   X,
   Pencil,
 } from "lucide-react";
+import Pagination from "@/components/shared/Pagination";
 
 const subscriptions = [
   {
@@ -51,7 +47,7 @@ export default function Subscriptions() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 bg-white p-10 rounded-l">
         <div className="flex items-center justify-end">
           <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
             <DialogTrigger asChild>
@@ -61,6 +57,7 @@ export default function Subscriptions() {
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-2xl w-full">
+              <DialogTitle/>
               <div className="space-y-4">
                 <div className="w-full">
                   <Label htmlFor="title">Title</Label>
@@ -149,9 +146,9 @@ export default function Subscriptions() {
                       <Pencil className="w-4 h-4" />
                     </Button>
                     <Button
-                      variant="destructive"
+                      variant="outline"
                       size="sm"
-                      className="w-10 h-10 rounded-full cursor-pointer hover:bg-red-500"
+                      className="w-10 h-10 rounded-full cursor-pointer hover:bg-red-500 hover:text-white border border-red-500 text-red-500"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -163,28 +160,7 @@ export default function Subscriptions() {
         </div>
 
         {/* Pagination */}
-       <div className="flex items-center justify-end gap-2 pt-8">
-          <Button variant="outline" size="sm" className="rounded-full h-10 w-10">
-            <ChevronLeft className="w-4 h-4" />
-          </Button>
-          <Button size="sm">1</Button>
-          <Button variant="ghost" size="sm">
-            2
-          </Button>
-          <Button variant="ghost" size="sm">
-            3
-          </Button>
-          <Button variant="ghost" size="sm">
-            4
-          </Button>
-          <span className="px-2">...</span>
-          <Button variant="ghost" size="sm">
-            30
-          </Button>
-          <Button variant="outline" size="sm" className="rounded-full h-10 w-10">
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-        </div>
+        <Pagination />
       </div>
     </DashboardLayout>
   );

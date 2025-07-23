@@ -20,3 +20,38 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   )
 }
+// "use client"
+
+// import type React from "react"
+
+// import { useRouter } from "next/navigation"
+// import { useEffect } from "react"
+// import { useAppSelector } from "@/redux/hooks"
+
+// interface DashboardLayoutProps {
+//   children: React.ReactNode
+// }
+
+// export function DashboardLayout({ children }: DashboardLayoutProps) {
+//   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated)
+//   const router = useRouter()
+
+//   useEffect(() => {
+//     if (!isAuthenticated) {
+//       router.push("/auth/login")
+//     }
+//   }, [isAuthenticated, router])
+
+//   if (!isAuthenticated) {
+//     return null
+//   }
+
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       <div className="p-8">
+//         <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+//         {children}
+//       </div>
+//     </div>
+//   )
+// }

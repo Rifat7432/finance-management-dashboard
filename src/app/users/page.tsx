@@ -1,13 +1,28 @@
-"use client"
+"use client";
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Search } from "lucide-react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { DashboardLayout } from "@/components/layout/dashboard-layout";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Plus, Search, Trash2 } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
 const users = Array.from({ length: 10 }, (_, i) => ({
   id: `${i + 1}`,
@@ -17,12 +32,13 @@ const users = Array.from({ length: 10 }, (_, i) => ({
   subscriptions: i === 1 ? ("Expired" as const) : ("Active" as const),
   startDate: "March 15, 2024",
   endDate: "Apr 15, 2024",
-}))
+}));
 
 export default function UserManagement() {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 bg-white p-10 rounded-l">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold">User Management</h1>
           <div className="relative w-64">
@@ -32,30 +48,38 @@ export default function UserManagement() {
         </div>
 
         <Card>
-           <CardContent>
-              <div className="overflow-x-auto">
-                <Table className="w-full">
-                  <TableHeader>
-                    <TableRow className="hover:bg-primary bg-[#636AE8] text-white">
-                      <TableHead className="text-left p-3 rounded-l text-white">
-                        Name
-                      </TableHead>
-                      <TableHead className="text-left p-3 text-white">Email</TableHead>
-                      <TableHead className="text-left p-3 text-white">
-                        Subscriptions
-                      </TableHead>
-                      <TableHead className="text-left p-3 text-white">
-                        Start Date
-                      </TableHead>
-                      <TableHead className="text-left p-3 text-white">End Date</TableHead>
-                      <TableHead className="text-left p-3 text-white rounded-r">
-                        Action
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <Table className="w-full">
+                <TableHeader>
+                  <TableRow className="hover:bg-primary bg-[#636AE8] text-white">
+                    <TableHead className="text-left p-3 rounded-l text-white">
+                      Name
+                    </TableHead>
+                    <TableHead className="text-left p-3 text-white">
+                      Email
+                    </TableHead>
+                    <TableHead className="text-left p-3 text-white">
+                      Subscriptions
+                    </TableHead>
+                    <TableHead className="text-left p-3 text-white">
+                      Start Date
+                    </TableHead>
+                    <TableHead className="text-left p-3 text-white">
+                      End Date
+                    </TableHead>
+                    <TableHead className="text-left p-3 text-white rounded-r">
+                      Action
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <Dialog
+                    open={isCreateModalOpen}
+                    onOpenChange={setIsCreateModalOpen}
+                  >
                     {users.map((user) => (
-                      <TableRow key={user.id} className="border-b">
+                      <TableRow className="border-b" key={user.id}>
                         <TableCell className="p-3">
                           <div className="flex items-center gap-2">
                             <Avatar className="w-8 h-8">
@@ -88,26 +112,72 @@ export default function UserManagement() {
                         <TableCell className="p-3">{user.endDate}</TableCell>
                         <TableCell className="p-3">
                           <div className="flex gap-2">
+                            <DialogTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="bg-[#0053B21A] hover:bg-[#636AE8] hover:text-white text-[#636AE8] border border-[#636AE8] rounded-2xl cursor-pointer"
+                              >
+                                View
+                              </Button>
+                            </DialogTrigger>
+
                             <Button
                               size="sm"
-                              variant="outline"
-                              className="bg-[#0053B21A] hover:bg-[#636AE8] hover:text-white text-[#636AE8] border border-[#636AE8] rounded-2xl cursor-pointer"
+                              variant="destructive"
+                              className="bg-[#B200001A] hover:bg-[#FF0000] hover:text-white text-[#FF0000] border border-[#FF0000] rounded-2xl cursor-pointer"
                             >
-                              View
-                            </Button>
-                            <Button size="sm" variant="destructive" className="bg-[#B200001A] hover:bg-[#FF0000] hover:text-white text-[#FF0000] border border-[#FF0000] rounded-2xl cursor-pointer">
                               Block
                             </Button>
                           </div>
                         </TableCell>
                       </TableRow>
                     ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
+                    <DialogContent className="max-w-2xl w-full space-y-5">
+                      <DialogTitle className="flex justify-between items-center px-4 mt-5">
+                        <Avatar className="w-14 h-14">
+                          <AvatarImage
+                            height={56}
+                            width={56}
+                            src="/profile.png"
+                          />
+                        </Avatar>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-6 h-6 rounded-full cursor-pointer hover:bg-red-500 hover:text-white text-red-500"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </DialogTitle>
+                      <div className="space-y-2 px-4">
+                        <p>
+                          <span className="text-sm">Venue Name :</span>
+                          <span className="text-sm font-semibold">
+                            Urban Palate
+                          </span>
+                        </p>
+                        <p>
+                          <span className="text-sm">Email : </span>
+                          <span className="text-sm font-semibold">
+                            abc@example.com
+                          </span>
+                        </p>
+                        <p>
+                          <span className="text-sm">Phone number : </span>
+                          <span className="text-sm font-semibold">
+                            (319) 555-0115
+                          </span>
+                        </p>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
         </Card>
       </div>
     </DashboardLayout>
-  )
+  );
 }

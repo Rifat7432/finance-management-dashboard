@@ -1,9 +1,10 @@
+"use client"
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { TrendingUp } from "lucide-react";
+import { Trash2, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import {
   Table,
@@ -15,6 +16,8 @@ import {
 } from "@/components/ui/table";
 import { FinanceOverviewChart } from "@/components/pages/dashboard/FinanceOverviewChart";
 import { StatisticBarChart } from "@/components/pages/dashboard/BarChart";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { useState } from "react";
 
 const stats = [
   {
@@ -35,20 +38,6 @@ const stats = [
     change: "+4%",
     subtitle: "From the last month",
   },
-];
-
-const chartData = [
-  { month: "Jan", value: 11000 },
-  { month: "Feb", value: 13000 },
-  { month: "Mar", value: 10000 },
-  { month: "Apr", value: 9500 },
-  { month: "May", value: 10200 },
-  { month: "Jun", value: 11500 },
-  { month: "Jul", value: 13500 },
-  { month: "Aug", value: 11000 },
-  { month: "Sep", value: 10500 },
-  { month: "Nov", value: 10200 },
-  { month: "Dec", value: 10000 },
 ];
 
 const users = [
@@ -81,6 +70,7 @@ const users = [
   },
 ];
 const Dashboard = () => {
+   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   return (
     <>
       {" "}
@@ -105,7 +95,7 @@ const Dashboard = () => {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-h-[800px]">
             {/* Usage Chart */}
             <StatisticBarChart />
 
@@ -146,9 +136,13 @@ const Dashboard = () => {
                       </TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody>
+                   <TableBody>
+                  <Dialog
+                    open={isCreateModalOpen}
+                    onOpenChange={setIsCreateModalOpen}
+                  >
                     {users.map((user) => (
-                      <TableRow key={user.id} className="border-b">
+                      <TableRow className="border-b" key={user.id}>
                         <TableCell className="p-3">
                           <div className="flex items-center gap-2">
                             <Avatar className="w-8 h-8">
@@ -181,21 +175,67 @@ const Dashboard = () => {
                         <TableCell className="p-3">{user.endDate}</TableCell>
                         <TableCell className="p-3">
                           <div className="flex gap-2">
+                            <DialogTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="bg-[#0053B21A] hover:bg-[#636AE8] hover:text-white text-[#636AE8] border border-[#636AE8] rounded-2xl cursor-pointer"
+                              >
+                                View
+                              </Button>
+                            </DialogTrigger>
+
                             <Button
                               size="sm"
-                              variant="outline"
-                              className="bg-[#0053B21A] hover:bg-[#636AE8] hover:text-white text-[#636AE8] border border-[#636AE8] rounded-2xl cursor-pointer"
+                              variant="destructive"
+                              className="bg-[#B200001A] hover:bg-[#FF0000] hover:text-white text-[#FF0000] border border-[#FF0000] rounded-2xl cursor-pointer"
                             >
-                              View
-                            </Button>
-                            <Button size="sm" variant="destructive" className="bg-[#B200001A] hover:bg-[#FF0000] hover:text-white text-[#FF0000] border border-[#FF0000] rounded-2xl cursor-pointer">
                               Block
                             </Button>
                           </div>
                         </TableCell>
                       </TableRow>
                     ))}
-                  </TableBody>
+                    <DialogContent className="max-w-2xl w-full space-y-5">
+                      <DialogTitle className="flex justify-between items-center px-4 mt-5">
+                        <Avatar className="w-14 h-14">
+                          <AvatarImage
+                            height={56}
+                            width={56}
+                            src="/profile.png"
+                          />
+                        </Avatar>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="w-6 h-6 rounded-full cursor-pointer hover:bg-red-500 hover:text-white text-red-500"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </DialogTitle>
+                      <div className="space-y-2 px-4">
+                        <p>
+                          <span className="text-sm">Venue Name :</span>
+                          <span className="text-sm font-semibold">
+                            Urban Palate
+                          </span>
+                        </p>
+                        <p>
+                          <span className="text-sm">Email : </span>
+                          <span className="text-sm font-semibold">
+                            abc@example.com
+                          </span>
+                        </p>
+                        <p>
+                          <span className="text-sm">Phone number : </span>
+                          <span className="text-sm font-semibold">
+                            (319) 555-0115
+                          </span>
+                        </p>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </TableBody>
                 </Table>
               </div>
             </CardContent>

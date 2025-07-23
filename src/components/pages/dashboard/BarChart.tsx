@@ -98,7 +98,7 @@ function CustomTooltip({ active, payload, label }: any) {
 
 export function StatisticBarChart() {
   return (
-    <Card className="lg:col-span-2">
+    <Card className="lg:col-span-2 h-[680px]">
       <CardHeader>
         <div className="flex items-center justify-between w-full gap-4">
           <CardTitle>Usage and Engagement Trends</CardTitle>
@@ -111,9 +111,9 @@ export function StatisticBarChart() {
         </div>
       </CardHeader>
 
-      <CardContent>
-        <ChartContainer config={{}}>
-          <ResponsiveContainer width="100%" height={256}>
+      <CardContent  className="h-[580px]">
+        <ChartContainer config={{}} className="h-full">
+          <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ left: 12, right: 12 }}>
               <CartesianGrid
                 vertical={false}
@@ -166,14 +166,6 @@ export function StatisticBarChart() {
         </ChartContainer>
       </CardContent>
 
-      <CardFooter className="flex flex-col items-start gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter>
     </Card>
   );
 }
