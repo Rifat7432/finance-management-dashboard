@@ -90,28 +90,20 @@ export default function AdManagement() {
                   <Label htmlFor="category">Ads Duration</Label>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Select>
-                        <SelectTrigger className="w-full my-2">
-                          <SelectValue placeholder="Start Date" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="budget">Budget</SelectItem>
-                          <SelectItem value="debt">Debt</SelectItem>
-                          <SelectItem value="saving">Saving</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Input
+                        id="startDate"
+                        type="date"
+                        placeholder="Start Date"
+                        className="w-full my-2"
+                      />
                     </div>
                     <div>
-                      <Select>
-                        <SelectTrigger className="w-full my-2">
-                          <SelectValue placeholder="End Date" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="budget">Budget</SelectItem>
-                          <SelectItem value="debt">Debt</SelectItem>
-                          <SelectItem value="saving">Saving</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Input
+                        id="endDate"
+                        type="date"
+                        placeholder="End Date"
+                        className="w-full my-2"
+                      />
                     </div>
                   </div>
                 </div>

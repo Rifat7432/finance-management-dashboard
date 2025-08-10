@@ -33,14 +33,14 @@ const tips = [
 export default function SpendingOverview() {
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 bg-white p-10 rounded-l">
         <h1 className="text-2xl font-bold">Spending Overview</h1>
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="bg-[#F0F2F5]">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-medium bg-[#F0F2F5]">
                 Total Monthly Spending
               </CardTitle>
             </CardHeader>
@@ -49,39 +49,37 @@ export default function SpendingOverview() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-[#F0F2F5]">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-medium">
                 Top Overspending Categories
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-lg font-semibold">
+              <div className="text-3xl font-bold">
                 Food, Shopping, Subscriptions
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-[#F0F2F5]">
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-medium">
                 Spending Growth from Last Month
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-green-600" />
-                <span className="text-2xl font-bold">12%</span>
+                <span className="text-3xl font-bold">12%</span>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Spending Heatmap */}
+        <h3 className="text-2xl font-bold">Spending Heatmap</h3>
         <Card>
-          <CardHeader>
-            <CardTitle>Spending Heatmap</CardTitle>
-          </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4 text-sm font-medium text-gray-600 mb-4">
@@ -115,78 +113,68 @@ export default function SpendingOverview() {
         </Card>
 
         {/* AI Insights */}
-        <Card>
-          <CardHeader>
-            <CardTitle>AI Insights</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Alerts */}
-            <div>
-              <h3 className="font-semibold mb-3">Alerts</h3>
-              <div className="space-y-3">
-                {alerts.map((alert, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">{alert}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        <h3 className="text-2xl font-bold">AI Insights</h3>
 
-            {/* AI Tips */}
-            <div>
-              <h3 className="font-semibold mb-3">AI Tips</h3>
-              <div className="space-y-3">
-                {tips.map((tip, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <Lightbulb className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700">{tip}</span>
-                  </div>
-                ))}
-              </div>
+        <div className="space-y-6">
+          {/* Alerts */}
+          <div>
+            <h3 className="font-bold text-lg mb-3">Alerts</h3>
+            <div className="space-y-3">
+              {alerts.map((alert, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-gray-700">{alert}</span>
+                </div>
+              ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+
+          {/* AI Tips */}
+          <div>
+            <h3 className="font-bold text-lg mb-3">AI Tips</h3>
+            <div className="space-y-3">
+              {tips.map((tip, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <Lightbulb className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm text-gray-700">{tip}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         {/* Installment & Loan Info */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Installment & Loan Info</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
-              <span className="text-sm text-gray-700">
-                Missed 2 installments
-              </span>
-            </div>
-            <div className="flex items-start gap-3">
-              <Calendar className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-              <span className="text-sm text-gray-700">
-                Next installment due date: 17 July
-              </span>
-            </div>
-            <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-              <span className="text-sm text-gray-700">
-                Status: 🟡 Medium Risk
-              </span>
-            </div>
-          </CardContent>
-        </Card>
+
+        <h3 className="font-bold text-lg mb-3">Installment & Loan Info</h3>
+
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-gray-700">Missed 2 installments</span>
+          </div>
+          <div className="flex items-start gap-3">
+            <Calendar className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-gray-700">
+              Next installment due date: 17 July
+            </span>
+          </div>
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-gray-700">
+              Status: 🟡 Medium Risk
+            </span>
+          </div>
+        </div>
 
         {/* Peer Comparison */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Peer Comparison</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-700">
-              You spend 22% more on shopping compared to others in your
-              age/income group.
-            </p>
-          </CardContent>
-        </Card>
+
+        <h3 className="font-bold text-lg mb-3">Peer Comparison</h3>
+        <div>
+          <p className="text-sm text-gray-700">
+            You spend 22% more on shopping compared to others in your age/income
+            group.
+          </p>
+        </div>
       </div>
     </DashboardLayout>
   );
