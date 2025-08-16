@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Plus, Search, Trash2 } from "lucide-react";
+import { Bell, Search, Trash2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -21,8 +21,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const users = Array.from({ length: 10 }, (_, i) => ({
   id: `${i + 1}`,
@@ -36,11 +36,34 @@ const users = Array.from({ length: 10 }, (_, i) => ({
 
 export default function UserManagement() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const navigate = useRouter();
   return (
     <DashboardLayout>
       <div className="space-y-6 bg-white p-10 rounded-l">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">User Management</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-bold">User Management</h1>
+            <select className="text-sm border rounded px-2 py-1">
+              <option>All</option>
+              <option>
+                <Badge
+                  variant="default"
+                  className="bg-green-100 text-green-800 outline-green-700 outline-1"
+                >
+                  Active
+                </Badge>
+              </option>
+              <option>
+                <Badge
+                  variant="destructive"
+                  className="bg-red-100 text-red-800 outline-red-700 outline-1"
+                >
+                  Inactive
+                </Badge>
+              </option>
+            </select>
+          </div>
+
           <div className="relative w-64">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input placeholder="Search" className="pl-10" />
@@ -112,6 +135,16 @@ export default function UserManagement() {
                         <TableCell className="p-3">{user.endDate}</TableCell>
                         <TableCell className="p-3">
                           <div className="flex gap-2">
+                            <Button
+                              onClick={() =>
+                                navigate.push(`/notifications/${user.id}`)
+                              }
+                              size="sm"
+                              variant="ghost"
+                              className="bg-transparent hover:bg-[#0053B21A] text-[#636AE8] cursor-pointer"
+                            >
+                              <Bell className="w-4 h-4" />
+                            </Button>
                             <DialogTrigger asChild>
                               <Button
                                 size="sm"
@@ -121,7 +154,6 @@ export default function UserManagement() {
                                 View
                               </Button>
                             </DialogTrigger>
-
                             <Button
                               size="sm"
                               variant="destructive"

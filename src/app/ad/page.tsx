@@ -22,21 +22,12 @@ import {
 } from "@/components/ui/select";
 import {
   Plus,
-  Play,
   Trash2,
   Edit,
-  Clock,
-  Upload,
-  ChevronLeft,
-  ChevronRight,
-  X,
-  Pencil,
-  PlayCircle,
+
 } from "lucide-react";
 import UploadFile from "@/components/shared/UploadFile";
 import Pagination from "@/components/shared/Pagination";
-
-const categories = ["All", "Budget", "Debt", "Saving"];
 
 const videos = Array.from({ length: 6 }, (_, i) => ({
   id: `${i + 1}`,
@@ -49,25 +40,12 @@ const videos = Array.from({ length: 6 }, (_, i) => ({
 }));
 
 export default function AdManagement() {
-  const [activeCategory, setActiveCategory] = useState("All");
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
 
   return (
     <DashboardLayout>
       <div className="space-y-6 bg-white p-10 rounded-l">
         <div className="flex items-center justify-between">
-          <div className="flex gap-2">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                variant={activeCategory === category ? "default" : "outline"}
-                onClick={() => setActiveCategory(category)}
-              >
-                {category}
-              </Button>
-            ))}
-          </div>
-
           <Dialog open={isUploadModalOpen} onOpenChange={setIsUploadModalOpen}>
             <DialogTrigger asChild>
               <Button>

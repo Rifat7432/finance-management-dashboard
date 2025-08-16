@@ -36,7 +36,7 @@ import {
 import UploadFile from "@/components/shared/UploadFile";
 import Pagination from "@/components/shared/Pagination";
 
-const categories = ["All", "Budget", "Debt", "Saving"];
+const categories = ["All", "Budget", "Debt", "Saving","Investment","taxation"];
 
 const videos = Array.from({ length: 6 }, (_, i) => ({
   id: `${i + 1}`,

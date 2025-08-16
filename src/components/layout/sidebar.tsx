@@ -21,7 +21,7 @@ const navigation = [
   { name: "Finance Data Monitoring", href: "/finance", icon: BarChart3 },
   { name: "Subscriptions", href: "/subscriptions", icon: CreditCard },
   { name: "Content Management", href: "/content", icon: Video },
-  { name: "Notifications", href: "/notifications", icon: Bell },
+  // { name: "Notifications", href: "/notifications", icon: Bell },
   { name: "Ad Management", href: "/ad", icon: Settings },
 ];
 
