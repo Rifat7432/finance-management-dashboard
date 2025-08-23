@@ -23,6 +23,13 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const users = Array.from({ length: 10 }, (_, i) => ({
   id: `${i + 1}`,
@@ -43,25 +50,24 @@ export default function UserManagement() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-bold">User Management</h1>
-            <select className="text-sm border rounded px-2 py-1">
-              <option>All</option>
-              <option>
-                <Badge
-                  variant="default"
-                  className="bg-green-100 text-green-800 outline-green-700 outline-1"
-                >
-                  Active
-                </Badge>
-              </option>
-              <option>
-                <Badge
-                  variant="destructive"
-                  className="bg-red-100 text-red-800 outline-red-700 outline-1"
-                >
-                  Inactive
-                </Badge>
-              </option>
-            </select>
+            <Select>
+              <SelectTrigger className="w-[180px] text-sm">
+                <SelectValue placeholder="All" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All</SelectItem>
+                <SelectItem value="active">
+                  <Badge className="bg-green-100 text-green-800 border border-green-700">
+                    Active
+                  </Badge>
+                </SelectItem>
+                <SelectItem value="inactive">
+                  <Badge className="bg-red-100 text-red-800 border border-red-700">
+                    Inactive
+                  </Badge>
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="relative w-64">

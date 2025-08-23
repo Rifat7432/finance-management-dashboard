@@ -25,6 +25,7 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 // 1. Raw data (in thousands for realism)
 const rawChartData = [
@@ -32,7 +33,7 @@ const rawChartData = [
   { month: "February", value: 13000 },
   { month: "March", value: 10300 },
   { month: "April", value: 9500 },
-  { month: "May", value: 10200 },
+  { month: "May", value: 102000 },
   { month: "June", value: 11000 },
   { month: "July", value: 14000 },
   { month: "August", value: 11500 },
@@ -102,16 +103,29 @@ export function StatisticBarChart() {
       <CardHeader>
         <div className="flex items-center justify-between w-full gap-4">
           <CardTitle>Usage and Engagement Trends</CardTitle>
-          <p className="text-sm whitespace-nowrap">
-            Month Revenue <span className="text-green-600">+9%</span>
-          </p>
-          <select className="text-sm border rounded px-2 py-1">
-            <option>Month</option>
-          </select>
+          <div>
+            <p className="text-lg font-semibold whitespace-nowrap">Month Revenue</p>
+            <p className="text-green-600">+9%</p>
+          </div>
+          <div>
+            {" "}
+            <p className="text-md font-semibold whitespace-nowrap">Total Subscriber</p>
+            <p className="text-primary font-semibold">5000</p>
+          </div>
+    <Select defaultValue="month">
+      <SelectTrigger className="w-[120px] text-sm">
+        <SelectValue placeholder="Select" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="month">Month</SelectItem>
+        <SelectItem value="quarter">Quarter</SelectItem>
+        <SelectItem value="year">Year</SelectItem>
+      </SelectContent>
+    </Select>
         </div>
       </CardHeader>
 
-      <CardContent  className="h-[580px]">
+      <CardContent className="h-[580px]">
         <ChartContainer config={{}} className="h-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} margin={{ left: 12, right: 12 }}>
@@ -165,7 +179,6 @@ export function StatisticBarChart() {
           </ResponsiveContainer>
         </ChartContainer>
       </CardContent>
-
     </Card>
   );
 }
