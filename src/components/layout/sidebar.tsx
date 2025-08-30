@@ -9,7 +9,7 @@ import {
   BarChart3,
   CreditCard,
   Video,
-  Bell,
+  CalendarCheck,
   Settings,
   LogOut,
   Shield,
@@ -21,7 +21,7 @@ const navigation = [
   { name: "Finance Data Monitoring", href: "/finance", icon: BarChart3 },
   { name: "Subscriptions", href: "/subscriptions", icon: CreditCard },
   { name: "Content Management", href: "/content", icon: Video },
-  // { name: "Notifications", href: "/notifications", icon: Bell },
+  { name: "Appointment", href: "/appointment", icon: CalendarCheck },
   { name: "Ad Management", href: "/ad", icon: Settings },
 ];
 

@@ -36,7 +36,12 @@ const users = Array.from({ length: 10 }, (_, i) => ({
   name: "Robo Gladiators",
   email: "@gmail.com",
   avatar: "/placeholder.svg?height=32&width=32",
-  subscriptions: i === 1 ? ("Expired" as const) : ("Active" as const),
+  subscriptions:
+    i === 1
+      ? ("Expired" as const)
+      : i === 2
+      ? ("Inactive" as const)
+      : ("Active" as const),
   startDate: "March 15, 2024",
   endDate: "Apr 15, 2024",
 }));
@@ -61,8 +66,13 @@ export default function UserManagement() {
                     Active
                   </Badge>
                 </SelectItem>
-                <SelectItem value="inactive">
+                <SelectItem value="expired">
                   <Badge className="bg-red-100 text-red-800 border border-red-700">
+                    Expired
+                  </Badge>
+                </SelectItem>
+                <SelectItem value="inactive">
+                  <Badge className="bg-yellow-100 text-yellow-800 border border-yellow-300">
                     Inactive
                   </Badge>
                 </SelectItem>
@@ -122,20 +132,30 @@ export default function UserManagement() {
                         </TableCell>
                         <TableCell className="p-3">{user.email}</TableCell>
                         <TableCell className="p-3">
-                          <Badge
-                            variant={
-                              user.subscriptions === "Active"
-                                ? "default"
-                                : "destructive"
-                            }
-                            className={
-                              user.subscriptions === "Active"
-                                ? "bg-green-100 text-green-800 outline-green-700 outline-1"
-                                : "bg-red-100 text-red-800 outline-red-700 outline-1"
-                            }
-                          >
-                            {user.subscriptions}
-                          </Badge>
+                          {user.subscriptions !== "Inactive" && (
+                            <Badge
+                              variant={
+                                user.subscriptions === "Active"
+                                  ? "default"
+                                  : "destructive"
+                              }
+                              className={
+                                user.subscriptions === "Active"
+                                  ? "bg-green-100 text-green-800 outline-green-700 outline-1"
+                                  : "bg-red-100 text-red-800 outline-red-700 outline-1"
+                              }
+                            >
+                              {user.subscriptions}
+                            </Badge>
+                          )}
+                          {user.subscriptions === "Inactive" && (
+                            <Badge
+                              variant={"destructive"}
+                              className="bg-yellow-100 text-yellow-800  outline-yellow-300 outline-1"
+                            >
+                              Inactive
+                            </Badge>
+                          )}
                         </TableCell>
                         <TableCell className="p-3">{user.startDate}</TableCell>
                         <TableCell className="p-3">{user.endDate}</TableCell>
