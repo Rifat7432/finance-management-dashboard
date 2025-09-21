@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -19,12 +18,10 @@ import {
   Plus,
   Trash2,
   Check,
-  ChevronLeft,
-  ChevronRight,
-  X,
   Pencil,
 } from "lucide-react";
 import Pagination from "@/components/shared/Pagination";
+import MultiSelectTagsInput from "@/components/pages/subscription/MultiTagInput";
 
 const subscriptions = [
   {
@@ -44,6 +41,7 @@ const subscriptions = [
 
 export default function Subscriptions() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [features, setFeatures] = useState<string[]>([""])
 
   return (
     <DashboardLayout>
@@ -88,12 +86,7 @@ export default function Subscriptions() {
                 </div>
 
                 <div>
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    className="min-h-[120px] my-2 w-full"
-                    placeholder="Enter description..."
-                  />
+              <MultiSelectTagsInput value={features} onChange={setFeatures}/>
                 </div>
                 <div>
                   <Label htmlFor="price">Price</Label>
