@@ -28,12 +28,12 @@ const VideoCard = ({
   };
 
   return (
-    <Card key={video.id} className="shadow-lg rounded-2xl overflow-hidden">
+    <Card key={video.id} className="shadow-lg rounded-2xl overflow-hidden pt-0">
       <video
         ref={videoRef}
         src={video.videoUrl}
         controls={false}
-        className="w-full h-40 object-cover"
+        className="w-full h-full object-cover"
         onEnded={() => setPlaying(false)}
         onPause={() => setPlaying(false)}
         onPlay={() => setPlaying(true)}

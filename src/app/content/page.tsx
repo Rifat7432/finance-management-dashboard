@@ -19,10 +19,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Plus, Trash2, Edit, Clock, PlayCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 import UploadFile from "@/components/shared/UploadFile";
 import Pagination from "@/components/shared/Pagination";
 import VideoCard from "@/components/pages/content/VideoCard";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 
 const categories = [
   "All",
@@ -30,7 +31,7 @@ const categories = [
   "Debt",
   "Saving",
   "Investment",
-  "taxation",
+  "Taxation",
 ];
 
 const videos = Array.from({ length: 6 }, (_, i) => ({
@@ -44,6 +45,8 @@ const videos = Array.from({ length: 6 }, (_, i) => ({
 export default function ContentManagement() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const dispatch = useAppDispatch();
+  const { loading } = useAppSelector((state) => state.user);
 
   return (
     <DashboardLayout>
