@@ -2,33 +2,54 @@
 
 import type React from "react";
 
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-
+import { jwtDecode } from "jwt-decode";
 import { AuthLayout } from "@/components/auth/auth-layout";
+import { TResponse, TUserLoginData } from "@/global/global.interface";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hooks/hooks";
+import { storToken, storUserData } from "@/redux/features/auth/authSlice";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const navigate = useRouter()
+  const dispatch = useAppDispatch();
+  const [loginUser, { isLoading }] = useLoginMutation();
+
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
+    reset,
     formState: { errors },
-  } = useForm<{
-    email: string;
-    password: string;
-    rememberMe: boolean;
-  }>({ defaultValues: { email: "", password: "", rememberMe: false } });
+  } = useForm();
 
-  const onSubmit = async (data: {
-    email: string;
-    password: string;
-    rememberMe: boolean;
-  }) => {};
+  const onSubmit = async (data: FieldValues) => {
+    try {
+      const res = (await loginUser(data)) as TResponse<TUserLoginData>;
+      if (res?.error && !res?.error?.data?.success) {
+        return toast.error(res.error.data.message);
+      }
+      if (res.data.success) {
+        reset({ password: "", email: "" });
+        toast.success(res.data.message);
+        navigate.push("/");
+        if (res?.data?.data) {
+          localStorage.setItem("accessToken", res?.data?.data.accessToken);
+          const decoded = jwtDecode(res?.data?.data.accessToken);
+          const { exp, iat, ...rest } = decoded;
+          dispatch(storToken(res?.data?.data.accessToken));
+          return dispatch(storUserData(rest));
+        }
+      }
+    } catch (err) {
+      toast.error("Login Failed");
+    }
+  };
 
   return (
     <AuthLayout>
@@ -58,7 +79,7 @@ export default function LoginPage() {
               />
               {errors.email && (
                 <p className="text-red-400 text-xs mt-1">
-                  {errors.email.message}
+                  {errors.email.message as string}
                 </p>
               )}
             </div>
@@ -77,26 +98,12 @@ export default function LoginPage() {
               />
               {errors.password && (
                 <p className="text-red-400 text-xs mt-1">
-                  {errors.password.message}
+                  {errors.password.message  as string}
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="remember"
-                  {...register("rememberMe")}
-                  checked={watch("rememberMe")}
-                  onCheckedChange={(checked) =>
-                    setValue("rememberMe", checked as boolean)
-                  }
-                  className="border-slate-600 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
-                />
-                <Label htmlFor="remember" className="text-white text-sm">
-                  Remember Password
-                </Label>
-              </div>
+            <div className="flex items-center justify-end">
               <Link
                 href="/auth/forgot-password"
                 className="text-red-400 text-sm hover:text-red-300 transition-colors"
@@ -107,12 +114,12 @@ export default function LoginPage() {
 
             <Button
               type="submit"
-              // disabled={isLoading}
+              disabled={isLoading}
               size="lg"
               className="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-medium"
             >
               Log In
-              {/* {isLoading ? "Logging in..." : "Log In"} */}
+              {isLoading ? "Logging in..." : "Log In"}
             </Button>
           </form>
         </div>

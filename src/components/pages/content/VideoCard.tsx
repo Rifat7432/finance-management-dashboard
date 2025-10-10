@@ -7,7 +7,7 @@ const VideoCard = ({
   video,
 }: {
   video: {
-    id: string;
+    _id: string;
     title: string;
     duration: string;
     category: string;
@@ -28,7 +28,7 @@ const VideoCard = ({
   };
 
   return (
-    <Card key={video.id} className="shadow-lg rounded-2xl overflow-hidden pt-0">
+    <Card key={video._id} className="shadow-lg rounded-2xl overflow-hidden pt-0">
       <video
         ref={videoRef}
         src={video.videoUrl}

@@ -2,12 +2,9 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type TUser = {
   name: string;
+  role: string;
   email: string;
-  password: string;
-  image: string;
-  image2: string;
-  phone: string;
-  resume: string;
+  image?: string;
 };
 type TValue = {
   user: TUser | null;

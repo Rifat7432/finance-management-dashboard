@@ -13,6 +13,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { baseApi } from "./services/API";
 import authReducer from "./features/auth/authSlice";
 import userReducer from "./features/user/userSlice";
+import contentReducer from "./features/content/contentSlice";
 
 
 const persistConfig = {
@@ -26,6 +27,7 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedAuthReducer,
     user: userReducer,
+    content:contentReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

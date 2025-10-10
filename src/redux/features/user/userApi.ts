@@ -5,7 +5,7 @@ const userApi = baseApi.injectEndpoints({
     getUser: builder.query({
       query: () => {
         return {
-          url: "user",
+          url: "users/profile",
           method: "GET",
         };
       },
@@ -19,17 +19,7 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
-    login: builder.mutation({
-      query: (loginData) => {
-        return {
-          url: "login",
-          method: "POST",
-          body: loginData,
-        };
-      },
-    }),
   }),
 });
 
-export const { useGetUserQuery, useEmailUserMutation, useLoginMutation } =
-  userApi;
+export const { useGetUserQuery, useEmailUserMutation } = userApi;
