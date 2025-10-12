@@ -23,12 +23,21 @@ const contentApi = baseApi.injectEndpoints({
       },
       providesTags: ["getUser"],
     }),
-    updateProfile: builder.mutation({
-      query: (updateData) => {
+    updateContent: builder.mutation({
+      query: ({ id, updateContentData }) => {
         return {
-          url: "/profile",
-          method: "PUT",
-          body: updateData,
+          url: `${prefix}/${id}`,
+          method: "PATCH",
+          body: updateContentData,
+        };
+      },
+      invalidatesTags: ["getUser"],
+    }),
+    deleteContent: builder.mutation({
+      query: (id) => {
+        return {
+          url: `${prefix}/${id}`,
+          method: "DELETE",
         };
       },
       invalidatesTags: ["getUser"],
@@ -38,6 +47,7 @@ const contentApi = baseApi.injectEndpoints({
 
 export const {
   useCreateContentMutation,
-  useUpdateProfileMutation,
+  useDeleteContentMutation,
   useGetContentsQuery,
+  useUpdateContentMutation,
 } = contentApi;

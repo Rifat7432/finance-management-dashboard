@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react'
 import { Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Controller, Control, FieldValues, Path } from 'react-hook-form'
+import { Controller, Control, FieldValues, Path, RegisterOptions } from 'react-hook-form'
 
 interface FileUploadProps<T extends FieldValues> {
   name: Path<T>
@@ -14,6 +14,7 @@ interface FileUploadProps<T extends FieldValues> {
   onFileSelect?: (file: File | null) => void
   disabled?: boolean
   error?: string
+  rules?: RegisterOptions<T>
 }
 
 export default function FileUpload<T extends FieldValues>({
@@ -25,11 +26,13 @@ export default function FileUpload<T extends FieldValues>({
   onFileSelect,
   disabled = false,
   error,
+  rules,
 }: FileUploadProps<T>) {
   return (
     <Controller
       name={name}
       control={control}
+      rules={rules}
       render={({ field: { onChange, value } }) => (
         <FileUploadContent
           value={value}

@@ -2,21 +2,25 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Edit, PlayCircle, PauseCircle, Trash2 } from "lucide-react";
 import { useState, useRef } from "react";
+import { TContentData, TResponse } from "@/global/global.interface";
+import { useDeleteContentMutation } from "@/redux/features/content/contentApi";
+import { toast } from "sonner";
+import { useAppDispatch } from "@/redux/hooks/hooks";
+import {
+  setIsUpdateModalOpen,
+  setUpdateContent,
+} from "@/redux/features/content/contentSlice";
 
-const VideoCard = ({
-  video,
-}: {
-  video: {
-    _id: string;
-    title: string;
-    duration: string;
-    category: string;
-    videoUrl: string; // replace with real video source
-  };
-}) => {
+interface VideoCardProps {
+  video: TContentData;
+}
+
+const VideoCard = ({ video }: VideoCardProps) => {
+  const dispatch = useAppDispatch();
+  const [deleteContent] = useDeleteContentMutation();
   const [playing, setPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-     
+
   const handlePlayPause = () => {
     if (!playing) {
       videoRef.current?.play();
@@ -27,8 +31,29 @@ const VideoCard = ({
     }
   };
 
+  const handleDelete = async (videoId: string) => {
+    try {
+      const res = (await deleteContent(videoId)) as TResponse<TContentData>;
+
+      if (res?.error && !res?.error?.data?.success) {
+        toast.error(res.error.data.message || "Failed to delete content");
+        return;
+      }
+
+      if (res.data?.success) {
+        toast.success(res.data.message || "Content deleted successfully");
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Failed to delete content");
+    }
+  };
+
   return (
-    <Card key={video._id} className="shadow-lg rounded-2xl overflow-hidden pt-0">
+    <Card
+      key={video._id}
+      className="shadow-lg rounded-2xl overflow-hidden pt-0"
+    >
       <video
         ref={videoRef}
         src={video.videoUrl}
@@ -56,10 +81,23 @@ const VideoCard = ({
 
         <div className="flex items-center justify-between pt-2">
           <div className="flex gap-3">
-            <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-red-500 hover:text-red-600 hover:bg-red-50"
+              onClick={() => handleDelete(video._id)}
+            >
               <Trash2 className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-blue-500 hover:text-blue-600 hover:bg-blue-50"
+              onClick={() => {
+                dispatch(setUpdateContent(video));
+                dispatch(setIsUpdateModalOpen(true));
+              }}
+            >
               <Edit className="w-4 h-4" />
             </Button>
           </div>

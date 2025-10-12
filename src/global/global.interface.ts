@@ -9,9 +9,18 @@ export type TErrorData = {
     stack: null;
   };
 };
+type TMeta ={
+            page: number;
+            limit: number;
+            total: number;
+            totalPage: number;
+        }
+
+
 export type TResponse<T> = {
   data: {
     data?: T;
+    meta?: TMeta
     success: boolean;
     message: string;
   };
