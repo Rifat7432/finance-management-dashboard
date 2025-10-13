@@ -1,23 +1,25 @@
-import { useGetContentsQuery } from "@/redux/features/content/contentApi";
 import VideoCard from "./VideoCard";
-import { TContentData } from "@/global/global.interface";
+import { TContentData, TErrorData } from "@/global/global.interface";
 import { useAppSelector } from "@/redux/hooks/hooks";
 import Spinner from "@/components/shared/Spinner";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
 
-const ContentList = () => {
+const ContentList = ({
+  videosData,
+  isLoading,
+  error,
+}: {
+  videosData: { data: { result: [TContentData] } };
+  isLoading: boolean;
+  error: FetchBaseQueryError |SerializedError | undefined;
+}) => {
   const { contentCategory } = useAppSelector((state) => state.content);
-  const {
-    data: videosData,
-    error,
-    isLoading,
-  } = useGetContentsQuery(
-    contentCategory === "All" ? {} : { category: contentCategory }
-  );
-
+  
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-28">
-        <Spinner/>
+        <Spinner />
       </div>
     );
   }
@@ -34,7 +36,7 @@ const ContentList = () => {
 
   const videos = videosData?.data?.result || [];
 
-  if (videos.length === 0) {
+  if (!videos.length) {
     return (
       <div className="flex items-center justify-center py-12 h-[60vh]">
         <div className="text-muted-foreground">

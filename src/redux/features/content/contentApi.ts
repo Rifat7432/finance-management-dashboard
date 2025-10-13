@@ -11,7 +11,7 @@ const contentApi = baseApi.injectEndpoints({
           body: contentData,
         };
       },
-      invalidatesTags: ["getUser"],
+      invalidatesTags: ["getContents"],
     }),
     getContents: builder.query({
       query: (query) => {
@@ -21,7 +21,7 @@ const contentApi = baseApi.injectEndpoints({
           params: query,
         };
       },
-      providesTags: ["getUser"],
+      providesTags: ["getContents"],
     }),
     updateContent: builder.mutation({
       query: ({ id, updateContentData }) => {
@@ -31,7 +31,7 @@ const contentApi = baseApi.injectEndpoints({
           body: updateContentData,
         };
       },
-      invalidatesTags: ["getUser"],
+      invalidatesTags: ["getContents"],
     }),
     deleteContent: builder.mutation({
       query: (id) => {
@@ -40,7 +40,7 @@ const contentApi = baseApi.injectEndpoints({
           method: "DELETE",
         };
       },
-      invalidatesTags: ["getUser"],
+      invalidatesTags: ["getContents"],
     }),
   }),
 });

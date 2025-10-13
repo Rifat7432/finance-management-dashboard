@@ -17,6 +17,8 @@ type TInitialState = {
     | "Saving"
     | "Investment"
     | "Taxation";
+  page: number;
+  limit: number;
 };
 
 const initialState: TInitialState = {
@@ -24,6 +26,8 @@ const initialState: TInitialState = {
   isUpdateModalOpen: false,
   isCreateModalOpen: false,
   contentCategory: "All",
+  page: 1,
+  limit: 10,
 };
 // content slice
 export const contentSlice = createSlice({
@@ -42,12 +46,15 @@ export const contentSlice = createSlice({
     setContentCategory: (state, action) => {
       state.contentCategory = action.payload;
     },
+    setPage: (state, action) => {
+      state.page = action.payload;
+    },
   },
 });
 export const {
   setUpdateContent,
   setIsCreateModalOpen,
   setIsUpdateModalOpen,
-  setContentCategory,
+  setContentCategory,setPage
 } = contentSlice.actions;
 export default contentSlice.reducer;

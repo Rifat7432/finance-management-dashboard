@@ -9,18 +9,17 @@ export type TErrorData = {
     stack: null;
   };
 };
-type TMeta ={
-            page: number;
-            limit: number;
-            total: number;
-            totalPage: number;
-        }
-
+type TMeta = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPage: number;
+};
 
 export type TResponse<T> = {
   data: {
     data?: T;
-    meta?: TMeta
+    meta?: TMeta;
     success: boolean;
     message: string;
   };
@@ -31,12 +30,33 @@ export type TUserLoginData = {
   refreshToken: string;
 };
 export type TContentData = {
-_id:string;
+  _id: string;
   category: string;
   title: string;
   duration: string;
   videoUrl: string;
   views: number;
+};
+export type TAppointment = {
+  _id: string;
+  name: string;
+  email: string;
+  attendant: string;
+  isChild: boolean;
+  approxIncome: number;
+  investment: number;
+  discuss?: string;
+  reachingFor: string;
+  ask: string;
+  date: string;
+  timeSlot: string;
+  userId: {
+    _id: string;
+    name: string;
+    email: string;
+    image: string;
+  };
+  status: "pending" | "complete";
 };
 export type TUpdateData = {
   accessToken: string;
