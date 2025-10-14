@@ -12,58 +12,33 @@ const authApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["getUser"],
     }),
-    signUp: builder.mutation({
+    forgetPassword: builder.mutation({
+      query: (emailData) => {
+        return {
+          url: "auth/dashboard/forget-password",
+          method: "POST",
+          body: emailData,
+        };
+      },
+      invalidatesTags: ["getUser"],
+    }),
+    resendOTP: builder.mutation({
       query: (user) => {
         return {
-          url: "/register",
+          url: "auth/resend-otp",
           method: "POST",
           body: user,
         };
       },
       invalidatesTags: ["getUser"],
     }),
-    makeAdmin: builder.mutation({
-      query: (id) => {
+    resetPassword: builder.mutation({
+      query: (updatedData) => {
+        console.log(updatedData)
         return {
-          url: `/register-admin/${id}`,
+          url: `auth/dashboard/reset-password`,
           method: "POST",
-        };
-      },
-      invalidatesTags: ["getUser"],
-    }),
-    removeUser: builder.mutation({
-      query: (id) => {
-        return {
-          url: `/delete/${id}`,
-          method: "DELETE",
-        };
-      },
-      invalidatesTags: ["getUser"],
-    }),
-    getProfile: builder.query({
-      query: () => {
-        return {
-          url: "/profile",
-          method: "GET",
-        };
-      },
-      providesTags: ["getUser"],
-    }),
-    getAllUsers: builder.query({
-      query: () => {
-        return {
-          url: "/all-profile",
-          method: "GET",
-        };
-      },
-      providesTags: ["getUser"],
-    }),
-    updateProfile: builder.mutation({
-      query: (updateData) => {
-        return {
-          url: "/profile",
-          method: "PUT",
-          body: updateData,
+          body: updatedData,
         };
       },
       invalidatesTags: ["getUser"],
@@ -71,7 +46,7 @@ const authApi = baseApi.injectEndpoints({
     changePassword: builder.mutation({
       query: (authData) => {
         return {
-          url: "/change-password",
+          url: "auth/change-password",
           method: "POST",
           body: authData,
         };
@@ -83,11 +58,8 @@ const authApi = baseApi.injectEndpoints({
 
 export const {
   useLoginMutation,
-  useSignUpMutation,
-  useGetProfileQuery,
-  useUpdateProfileMutation,
+  useForgetPasswordMutation,
+  useResendOTPMutation,
+  useResetPasswordMutation,
   useChangePasswordMutation,
-  useGetAllUsersQuery,
-  useMakeAdminMutation,
-  useRemoveUserMutation,
 } = authApi;

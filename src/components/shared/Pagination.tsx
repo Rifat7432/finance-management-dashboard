@@ -110,7 +110,7 @@ const Pagination = ({
 
         return (
           <Button
-            key={pageNum}
+            key={index}
             size="sm"
             variant={page === pageNum ? "default" : "ghost"}
             onClick={() => handlePageClick(pageNum)}

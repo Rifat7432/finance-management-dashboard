@@ -1,9 +1,19 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  BaseQueryApi,
+  BaseQueryFn,
+  createApi,
+  DefinitionType,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-
+import { toast } from "sonner";
+import { logOut, storToken } from "../features/auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1`,
+  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
     if (token) {
@@ -12,10 +22,35 @@ const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
-
+const baseQueryWithRefreshToken: BaseQueryFn<
+  FetchArgs,
+  BaseQueryApi,
+  DefinitionType
+> = async (args, api, extraOptions): Promise<any> => {
+  let result = await baseQuery(args, api, extraOptions);
+  if (result.error?.status === 404) {
+    console.log("404");
+    toast.error("User not found");
+  }
+  if (result.error?.status === 401) {
+    const res = await fetch("http://localhost:5001/api/v1/auth/refresh-token", {
+      method: "POST",
+      credentials: "include",
+    });
+    const data = await res.json();
+    if (data.success) {
+      api.dispatch(storToken(data.data.accessToken));
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      api.dispatch(logOut());
+    }
+  }
+  return result;
+};
+//8905589315
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  baseQuery: baseQuery,
-  tagTypes: ["getUser", "getAppointments","getContents"],
+  baseQuery: baseQueryWithRefreshToken,
+  tagTypes: ["getUser", "getAppointments", "getContents"],
   endpoints: () => ({}),
 });

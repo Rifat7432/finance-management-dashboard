@@ -17,7 +17,7 @@ import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const navigate = useRouter()
+  const navigate = useRouter();
   const dispatch = useAppDispatch();
   const [loginUser, { isLoading }] = useLoginMutation();
 
@@ -98,7 +98,7 @@ export default function LoginPage() {
               />
               {errors.password && (
                 <p className="text-red-400 text-xs mt-1">
-                  {errors.password.message  as string}
+                  {errors.password.message as string}
                 </p>
               )}
             </div>

@@ -27,7 +27,7 @@ export function Header() {
   console.log(data?.data);
   const user = data?.data;
   if (user === null || isLoading) return null;
-
+  console.log(user?.image, user, data);
 
   return (
     <header
@@ -39,7 +39,9 @@ export function Header() {
       </Button>
       <Avatar>
         <AvatarImage
-          src={user.image ? user.image : "/placeholder.svg?height=32&width=32"}
+          src={
+            user?.image ? user?.image : "/placeholder.svg?height=32&width=32"
+          }
         />
         <AvatarFallback>{user.name}</AvatarFallback>
       </Avatar>
