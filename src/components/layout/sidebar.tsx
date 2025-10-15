@@ -14,6 +14,8 @@ import {
   LogOut,
   Shield,
 } from "lucide-react";
+import { useAppDispatch } from "@/redux/hooks/hooks";
+import { logOut } from "@/redux/features/auth/authSlice";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -27,6 +29,7 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const dispatch = useAppDispatch();
 
   return (
     <div className="flex h-screen w-64 flex-col bg-white border-r border-gray-200">
@@ -63,7 +66,13 @@ export function Sidebar() {
       {/* Logout */}
       <div className="px-4 py-4 border-t border-gray-200">
         <button className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 w-full">
-          <LogOut className="w-5 h-5" />
+          <LogOut
+            onClick={() => {
+              dispatch(logOut());
+              console.log("logout")
+            }}
+            className="w-5 h-5"
+          />
           Logout
         </button>
       </div>

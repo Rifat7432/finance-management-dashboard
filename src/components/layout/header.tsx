@@ -43,7 +43,7 @@ export function Header() {
             user?.image ? user?.image : "/placeholder.svg?height=32&width=32"
           }
         />
-        <AvatarFallback>{user.name}</AvatarFallback>
+        <AvatarFallback>{user?.name}</AvatarFallback>
       </Avatar>
     </header>
   );

@@ -2,7 +2,7 @@ import VideoCard from "./VideoCard";
 import { TContentData, TErrorData } from "@/global/global.interface";
 import { useAppSelector } from "@/redux/hooks/hooks";
 import Spinner from "@/components/shared/Spinner";
-import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { DefinitionType } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
 
 const ContentList = ({
@@ -12,7 +12,7 @@ const ContentList = ({
 }: {
   videosData: { data: { result: [TContentData] } };
   isLoading: boolean;
-  error: FetchBaseQueryError |SerializedError | undefined;
+  error: DefinitionType  |SerializedError | undefined;
 }) => {
   const { contentCategory } = useAppSelector((state) => state.content);
   
