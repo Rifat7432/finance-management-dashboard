@@ -37,7 +37,7 @@ export default function AppointmentPage() {
     <div className="space-y-6 bg-white p-10 rounded-l">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <h1 className="text-2xl font-bold">User Management</h1>
+          <h1 className="text-2xl font-bold">Appointment Management</h1>
           <Select value={status} onValueChange={(value) => setStatus(value)}>
             <SelectTrigger className="w-[180px] text-sm">
               <SelectValue placeholder="all" />

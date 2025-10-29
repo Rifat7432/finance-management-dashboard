@@ -65,14 +65,14 @@ export function Sidebar() {
 
       {/* Logout */}
       <div className="px-4 py-4 border-t border-gray-200">
-        <button className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 w-full">
-          <LogOut
-            onClick={() => {
-              dispatch(logOut());
-              console.log("logout")
-            }}
-            className="w-5 h-5"
-          />
+        <button
+          onClick={() => {
+            dispatch(logOut());
+            console.log("logout");
+          }}
+          className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 w-full cursor-pointer"
+        >
+          <LogOut className="w-5 h-5" />
           Logout
         </button>
       </div>

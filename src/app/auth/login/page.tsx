@@ -41,9 +41,19 @@ export default function LoginPage() {
         if (res?.data?.data) {
           localStorage.setItem("accessToken", res?.data?.data.accessToken);
           const decoded = jwtDecode(res?.data?.data.accessToken);
+          console.log(decoded);
           const { exp, iat, ...rest } = decoded;
-          dispatch(storToken(res?.data?.data.accessToken));
-          return dispatch(storUserData(rest));
+          if (
+            typeof rest === "object" &&
+            rest !== null &&
+            "role" in rest &&
+            rest.role === "ADMIN"
+          ) {
+            dispatch(storToken(res?.data?.data.accessToken));
+            return dispatch(storUserData(rest));
+          } else {
+            toast.error("Unauthorized Access");
+          }
         }
       }
     } catch (err) {
@@ -118,7 +128,6 @@ export default function LoginPage() {
               size="lg"
               className="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-medium"
             >
-              Log In
               {isLoading ? "Logging in..." : "Log In"}
             </Button>
           </form>

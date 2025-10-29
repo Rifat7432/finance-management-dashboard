@@ -58,7 +58,7 @@ const VideoCard = ({ video }: VideoCardProps) => {
         ref={videoRef}
         src={video.videoUrl}
         controls={false}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover max-h-72"
         onEnded={() => setPlaying(false)}
         onPause={() => setPlaying(false)}
         onPlay={() => setPlaying(true)}
