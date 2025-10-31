@@ -21,7 +21,7 @@ const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "User Management", href: "/users", icon: Users },
   { name: "Finance Data Monitoring", href: "/finance", icon: BarChart3 },
-  { name: "Subscriptions", href: "/subscriptions", icon: CreditCard },
+  // { name: "Subscriptions", href: "/subscriptions", icon: CreditCard },
   { name: "Content Management", href: "/content", icon: Video },
   { name: "Appointment", href: "/appointment", icon: CalendarCheck },
   { name: "Ad Management", href: "/ad", icon: Settings },

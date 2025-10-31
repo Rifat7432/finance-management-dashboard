@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
@@ -10,13 +11,13 @@ import {
   Calendar,
   AlertTriangle,
 } from "lucide-react";
+import { useGetUserExpensesDetailsQuery } from "@/redux/features/user/userApi";
+import Spinner from "../shared/Spinner";
 
 const spendingCategories = [
-  { category: "Food", level: "High", color: "bg-red-100" },
-  { category: "Transport", level: "Low", color: "bg-gray-100" },
-  { category: "Shopping", level: "Moderate", color: "bg-yellow-100" },
-  { category: "Utility Bills", level: "Low", color: "bg-gray-100" },
-  { category: "Others", level: "Moderate", color: "bg-yellow-100" },
+  { level: "High", color: "bg-red-100" },
+  { level: "Low", color: "bg-gray-100" },
+  { level: "Moderate", color: "bg-yellow-100" },
 ];
 
 const alerts = [
@@ -30,7 +31,15 @@ const tips = [
   "Controlling restaurant spending could save ₹15,000/year.",
 ];
 
-export default function SpendingOverview() {
+export default function SpendingOverview({ userId }: { userId: string }) {
+  const { data, isLoading } = useGetUserExpensesDetailsQuery(userId);
+  if (isLoading) {
+    return (
+      <div className="h-80 flex items-center justify-center">
+        <Spinner></Spinner>
+      </div>
+    );
+  }
   return (
     <DashboardLayout>
       <div className="space-y-6 bg-white p-10 rounded-l">
@@ -45,7 +54,9 @@ export default function SpendingOverview() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold">₹24,500</div>
+              <div className="text-3xl font-bold">
+                {data?.data?.totalMonthlySpending}
+              </div>
             </CardContent>
           </Card>
 
@@ -57,7 +68,9 @@ export default function SpendingOverview() {
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-bold">
-                Food, Shopping, Subscriptions
+                {data?.data?.topOverspendingCategories.length > 0
+                  ? data?.data?.topOverspendingCategories.join(", ")
+                  : "N/A"}
               </div>
             </CardContent>
           </Card>
@@ -71,46 +84,56 @@ export default function SpendingOverview() {
             <CardContent>
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-green-600" />
-                <span className="text-3xl font-bold">12%</span>
+                <span className="text-3xl font-bold">
+                  {data?.data?.topOverspendingCategories
+                    ? data?.data?.spendingGrowth
+                    : "0%"}
+                </span>
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Spending Heatmap */}
-        <h3 className="text-2xl font-bold">Spending Heatmap</h3>
-        <Card>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4 text-sm font-medium text-gray-600 mb-4">
-                <div>Category</div>
-                <div className="text-right">Spending Level</div>
-              </div>
-              {spendingCategories.map((item, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-2 gap-4 items-center py-3 border-b last:border-b-0"
-                >
-                  <div className="font-medium">{item.category}</div>
-                  <div className="text-right">
-                    <Badge
-                      variant="secondary"
-                      className={`${item.color} ${
-                        item.level === "High"
-                          ? "text-red-800"
-                          : item.level === "Moderate"
-                          ? "text-yellow-800"
-                          : "text-gray-800"
-                      }`}
-                    >
-                      {item.level}
-                    </Badge>
-                  </div>
+        {data?.data?.spendingHeatmap.length > 0 && (
+          <h3 className="text-2xl font-bold">Spending Heatmap</h3>
+        )}
+        {data?.data?.spendingHeatmap.length > 0 && (
+          <Card>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4 text-sm font-medium text-gray-600 mb-4">
+                  <div>Category</div>
+                  <div className="text-right">Spending Level</div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                {data?.data?.spendingHeatmap?.map(
+                  (item: any, index: number) => (
+                    <div
+                      key={index}
+                      className="grid grid-cols-2 gap-4 items-center py-3 border-b last:border-b-0"
+                    >
+                      <div className="font-medium">{item.category}</div>
+                      <div className="text-right">
+                        <Badge
+                          variant="secondary"
+                          className={`${item.color} ${
+                            item.level === "High"
+                              ? "text-red-800"
+                              : item.level === "Moderate"
+                              ? "text-yellow-800"
+                              : "text-gray-800"
+                          }`}
+                        >
+                          {item.spendingLevel}
+                        </Badge>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* AI Insights */}
         <h3 className="text-2xl font-bold">AI Insights</h3>

@@ -24,10 +24,8 @@ export function Header() {
       );
     }
   }, [isLoading, dispatch, data]);
-  console.log(data?.data);
   const user = data?.data;
   if (user === null || isLoading) return null;
-  console.log(user?.image, user, data);
 
   return (
     <header

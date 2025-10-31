@@ -1,5 +1,5 @@
 import VideoCard from "./VideoCard";
-import { TContentData, TErrorData } from "@/global/global.interface";
+import { TContentData } from "@/global/global.interface";
 import { useAppSelector } from "@/redux/hooks/hooks";
 import Spinner from "@/components/shared/Spinner";
 import { DefinitionType } from "@reduxjs/toolkit/query";
