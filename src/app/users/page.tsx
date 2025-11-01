@@ -238,7 +238,7 @@ export default function UserManagement() {
                           <div className="flex gap-2">
                             <Button
                               onClick={() =>
-                                navigate.push(`/notifications/${user.id}`)
+                                navigate.push(`/notifications/${user._id}`)
                               }
                               size="sm"
                               variant="ghost"

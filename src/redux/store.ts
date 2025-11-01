@@ -14,7 +14,8 @@ import { baseApi } from "./services/API";
 import authReducer from "./features/auth/authSlice";
 import userReducer from "./features/user/userSlice";
 import contentReducer from "./features/content/contentSlice";
-
+import adReducer from "./features/ad/adSlice";
+import financeReducer from "./features/finance/financeSlice";
 
 const persistConfig = {
   key: "auth",
@@ -27,7 +28,9 @@ export const store = configureStore({
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedAuthReducer,
     user: userReducer,
-    content:contentReducer
+    content: contentReducer,
+    ad: adReducer,
+    finance: financeReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

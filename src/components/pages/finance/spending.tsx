@@ -11,15 +11,8 @@ import {
   Calendar,
   AlertTriangle,
 } from "lucide-react";
-import { useGetUserExpensesDetailsQuery } from "@/redux/features/user/userApi";
-import Spinner from "../shared/Spinner";
-
-const spendingCategories = [
-  { level: "High", color: "bg-red-100" },
-  { level: "Low", color: "bg-gray-100" },
-  { level: "Moderate", color: "bg-yellow-100" },
-];
-
+import Spinner from "../../shared/Spinner";
+import { useGetUserExpensesDetailsQuery } from "@/redux/features/finance/financeApi";
 const alerts = [
   "Your food expenses are 35% above average.",
   "You've overspent ₹1,200 on subscriptions.",

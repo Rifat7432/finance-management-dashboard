@@ -43,23 +43,6 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
-    getUserFinanceTrack: builder.query({
-      query: (query) => {
-        return {
-          url: "admin/users/finance-track",
-          method: "GET",
-          params: query,
-        };
-      },
-    }),
-    getUserExpensesDetails: builder.query({
-      query: (id) => {
-        return {
-          url: `admin/user/expenses-details/${id}`,
-          method: "GET",
-        };
-      },
-    }),
     emailUser: builder.mutation({
       query: (email) => {
         return {
@@ -79,6 +62,4 @@ export const {
   useBlockUserMutation,
   useDeleteUserMutation,
   useGetUserByIdQuery,
-  useGetUserFinanceTrackQuery,
-  useGetUserExpensesDetailsQuery
 } = userApi;

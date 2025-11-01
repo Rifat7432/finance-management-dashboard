@@ -37,6 +37,14 @@ export type TContentData = {
   videoUrl: string;
   views: number;
 };
+export type TAdData = {
+  _id: string;
+  name: string;
+  title: string;
+  startDate: string;
+  endDate: string;
+  url: string;
+};
 export type TAppointment = {
   _id: string;
   name: string;

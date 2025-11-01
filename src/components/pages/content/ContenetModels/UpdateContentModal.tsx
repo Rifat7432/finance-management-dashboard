@@ -54,8 +54,6 @@ const UpdateContentModal = () => {
   }, [isUpdateModalOpen, defaultValues, reset]);
 
   const handleUpdateContent = async (contentData: FieldValues) => {
-    console.log("Updating content:", contentData);
-
     const formData = new FormData();
     let duration = Number(
       typeof defaultValues?.duration.split(" ")[0] === "number"

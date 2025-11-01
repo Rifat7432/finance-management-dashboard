@@ -2,16 +2,6 @@ import { baseApi } from "@/redux/services/API";
 const prefix = "/appointments";
 const appointmentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    createAppointment: builder.mutation({
-      query: (appointmentData) => {
-        return {
-          url: `${prefix}/`,
-          method: "POST",
-          body: appointmentData,
-        };
-      },
-      invalidatesTags: ["getAppointments"],
-    }),
     getAppointments: builder.query({
       query: (query) => {
         return {
@@ -23,20 +13,10 @@ const appointmentApi = baseApi.injectEndpoints({
       providesTags: ["getAppointments"],
     }),
     updateAppointment: builder.mutation({
-      query: ({ id, updateAppointmentData }) => {
+      query: ( id ) => {
         return {
-          url: `${prefix}/${id}`,
+          url: `/admin${prefix}/${id}`,
           method: "PATCH",
-          body: updateAppointmentData,
-        };
-      },
-      invalidatesTags: ["getAppointments"],
-    }),
-    deleteAppointment: builder.mutation({
-      query: (id) => {
-        return {
-          url: `${prefix}/${id}`,
-          method: "DELETE",
         };
       },
       invalidatesTags: ["getAppointments"],
@@ -44,4 +24,5 @@ const appointmentApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {useCreateAppointmentMutation,useDeleteAppointmentMutation,useGetAppointmentsQuery} = appointmentApi;
+export const { useGetAppointmentsQuery, useUpdateAppointmentMutation } =
+  appointmentApi;

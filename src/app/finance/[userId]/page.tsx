@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import SpendingOverview from "@/components/layout/spending";
+import SpendingOverview from "@/components/pages/finance/spending";
 import React from "react";
 
 const Page = async ({ params }: any) => {

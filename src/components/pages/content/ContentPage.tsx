@@ -7,7 +7,7 @@ import ContentList from "@/components/pages/content/ContentList";
 import CreateContentModal from "@/components/pages/content/ContenetModels/CreateContentModal";
 import UpdateContentModal from "@/components/pages/content/ContenetModels/UpdateContentModal";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
-import { setContentCategory } from "@/redux/features/content/contentSlice";
+import { setContentCategory, setPage } from "@/redux/features/content/contentSlice";
 import Pagination from "@/components/shared/Pagination";
 import { useGetContentsQuery } from "@/redux/features/content/contentApi";
 
@@ -66,7 +66,7 @@ export default function ContentPage() {
 
         {/* Pagination */}
         {!isLoading && (
-          <Pagination totalPages={Number(videosData?.data?.meta?.totalPage)} />
+          <Pagination setPage={(page)=> dispatch(setPage(page))} totalPages={Number(videosData?.data?.meta?.totalPage)} page={page}/>
         )}
       </div>
     </DashboardLayout>

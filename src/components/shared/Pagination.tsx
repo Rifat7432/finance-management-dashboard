@@ -1,20 +1,21 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
-import { setPage } from "@/redux/features/content/contentSlice";
+import { useAppSelector } from "@/redux/hooks/hooks";
 
 interface PaginationProps {
   totalPages: number;
   maxVisiblePages?: number;
+  setPage: (page: number) => void;
+  page: number;
 }
 
 const Pagination = ({
   totalPages,
   maxVisiblePages = 5,
+  setPage,
+  page,
 }: PaginationProps) => {
-  const dispatch = useAppDispatch();
-  const { page } = useAppSelector((state) => state.content);
   // Generate array of page numbers to display
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
@@ -59,7 +60,7 @@ const Pagination = ({
   };
 
   const handlePageChange = (newPage: number) => {
-    dispatch(setPage(newPage));
+    setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 

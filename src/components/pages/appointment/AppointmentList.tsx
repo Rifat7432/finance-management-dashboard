@@ -30,7 +30,9 @@ import {
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { TAppointment } from "@/global/global.interface";
+import { TAppointment, TResponse } from "@/global/global.interface";
+import { useUpdateAppointmentMutation } from "@/redux/features/appointment/appointmentApi";
+import { toast } from "sonner";
 const AppointmentList = ({
   viewDetails,
   appointment,
@@ -46,6 +48,25 @@ const AppointmentList = ({
   appointments: { data: TAppointment[] };
   isError: boolean;
 }) => {
+  const [updateAppointment] = useUpdateAppointmentMutation();
+  const handelCompleteAppointment = async (id: string) => {
+    console.log(id)
+    try {
+      const res = (await updateAppointment(id)) as TResponse<TAppointment>;
+
+      if (res?.error && !res?.error?.data?.success) {
+        toast.error(res.error.data.message || "Failed to update appointment");
+        return;
+      }
+
+      if (res.data?.success) {
+        toast.success(res.data.message || "Appointment updated successfully");
+      }
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Failed to update appointment");
+    }
+  };
   if (isError) {
     return (
       <div className="flex items-center justify-center py-12">
@@ -350,7 +371,14 @@ const AppointmentList = ({
                         >
                           Close
                         </Button>
-                        <Button className="px-6">Complete</Button>
+                        <Button
+                          className="px-6"
+                          onClick={() =>
+                            handelCompleteAppointment(appointment._id)
+                          }
+                        >
+                          Complete
+                        </Button>
                       </div>
                     </DialogContent>
                   )}
