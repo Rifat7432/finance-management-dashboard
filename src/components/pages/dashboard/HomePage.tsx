@@ -32,6 +32,7 @@ import {
 import { TResponse, TUserLoginData } from "@/global/global.interface";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Spinner from "@/components/shared/Spinner";
 
 // const stats = [
 //   {
@@ -117,9 +118,13 @@ const HomePage = () => {
     setIsCreateModalOpen(true);
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (usersData === null || isLoading)
+    return (
+      <div className="h-80 flex items-center justify-center">
+        <Spinner />
+      </div>
+    );
+
 
   const stats = data.data || null;
 
