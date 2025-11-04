@@ -35,10 +35,10 @@ export function Sidebar() {
     <div className="flex h-screen w-64 flex-col bg-white border-r border-gray-200">
       {/* Logo */}
       <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-200">
-        <div className="flex items-center justify-center w-8 h-8 bg-primary rounded">
-          <Shield className="w-5 h-5 text-white" />
+        <div className="flex items-center justify-center w-10 h-10 rounded">
+      <img src="/logo.png" alt="logo" />
         </div>
-        <span className="text-xl font-semibold text-gray-900">NikoSafe</span>
+        <span className="text-xl font-semibold text-gray-900">ROHU APP </span>
       </div>
 
       {/* Navigation */}

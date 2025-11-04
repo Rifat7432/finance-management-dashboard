@@ -1,24 +1,32 @@
-"use client"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 
-import * as React from "react"
-import { ChevronDownIcon } from "lucide-react"
+import * as React from "react";
+import { ChevronDownIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
+} from "@/components/ui/popover";
 
-export function YearPicker() {
-  const [open, setOpen] = React.useState(false)
-  const [year, setYear] = React.useState<number | undefined>(undefined)
+export function YearPicker({
+  year,
+  setYear,
+}: {
+  year: number | undefined;
+  setYear: any;
+}) {
+  const [open, setOpen] = React.useState(false);
 
-  const years = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i)
+  const years = Array.from(
+    { length: 100 },
+    (_, i) => new Date().getFullYear() - i
+  );
 
   return (
     <div className="flex flex-col gap-3">
-      
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -37,8 +45,8 @@ export function YearPicker() {
                 key={y}
                 className="cursor-pointer rounded-md px-2 py-1 hover:bg-accent"
                 onClick={() => {
-                  setYear(y)
-                  setOpen(false)
+                  setYear(y);
+                  setOpen(false);
                 }}
               >
                 {y}
@@ -48,5 +56,5 @@ export function YearPicker() {
         </PopoverContent>
       </Popover>
     </div>
-  )
+  );
 }

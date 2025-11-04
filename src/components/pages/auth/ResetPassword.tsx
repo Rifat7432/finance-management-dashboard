@@ -136,7 +136,6 @@ const ResetPassword = ({ email, token }: { email: string; token: string }) => {
               disabled={isLoading}
               className="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-medium"
             >
-              Update Password
               {isLoading ? "Updating..." : "Update Password"}
             </Button>
           </form>

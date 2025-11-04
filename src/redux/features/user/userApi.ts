@@ -43,6 +43,15 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getAdminStats: builder.query({
+      query: (query) => {
+        return {
+          url: "admin/stats",
+          method: "GET",
+          params: query,
+        };
+      },
+    }),
     emailUser: builder.mutation({
       query: (email) => {
         return {
@@ -62,4 +71,5 @@ export const {
   useBlockUserMutation,
   useDeleteUserMutation,
   useGetUserByIdQuery,
+  useGetAdminStatsQuery,
 } = userApi;

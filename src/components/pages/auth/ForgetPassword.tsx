@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForgetPasswordMutation } from "@/redux/features/auth/authApi";
-import { useRouter } from "next/navigation";
 import { TResponse } from "@/global/global.interface";
 import { toast } from "sonner";
 
@@ -70,7 +69,6 @@ const ForgotPassword = () => {
               disabled={isLoading}
               className="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-medium"
             >
-              Next
               {isLoading ? "Sending..." : "Next"}
             </Button>
           </form>

@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Bell, Search, Trash2, Loader2 } from "lucide-react";
+import { Trash2, TrendingUp, TrendingDown, Bell, Loader2 } from "lucide-react";
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -16,50 +15,86 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { FinanceOverviewChart } from "@/components/pages/dashboard/FinanceOverviewChart";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import { toast } from "sonner"; // or your toast library
+import { useState } from "react";
+import StatisticBarChart from "@/components/pages/dashboard/BarChart";
 import {
   useBlockUserMutation,
+  useGetAdminStatsQuery,
   useGetAllUsersQuery,
 } from "@/redux/features/user/userApi";
-import Spinner from "@/components/shared/Spinner";
 import { TResponse, TUserLoginData } from "@/global/global.interface";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-export default function UserManagement() {
+// const stats = [
+//   {
+//     title: "",
+//     value: "2,500",
+//     change: "+4%",
+//     subtitle: ",
+//   },
+//   {
+//     title: "",
+//     value: "15.2%",
+//     change: "+4%",
+//     subtitle: "From the last month",
+//   },
+//   {
+//     title: "",
+//     value: "54,321",
+//     change: "+4%",
+//     subtitle: "From the last month",
+//   },
+// ];
+
+const users = [
+  {
+    id: "1",
+    name: "Robo Gladiators",
+    email: "@gmail.com",
+    avatar: "/placeholder.svg?height=32&width=32",
+    subscriptions: "Active" as const,
+    startDate: "March 15, 2024",
+    endDate: "Apr 15, 2024",
+  },
+  {
+    id: "2",
+    name: "Robo Gladiators",
+    email: "@gmail.com",
+    avatar: "/placeholder.svg?height=32&width=32",
+    subscriptions: "Expired" as const,
+    startDate: "March 15, 2024",
+    endDate: "Apr 15, 2024",
+  },
+  {
+    id: "3",
+    name: "Robo Gladiators",
+    email: "@gmail.com",
+    avatar: "/placeholder.svg?height=32&width=32",
+    subscriptions: "Active" as const,
+    startDate: "March 15, 2024",
+    endDate: "Apr 15, 2024",
+  },
+];
+const HomePage = () => {
+   const navigate = useRouter();
+  const [year, setYear] = useState<number | undefined>(undefined);
+  const { data, isLoading } = useGetAdminStatsQuery({
+    year: year ? year : new Date().getFullYear(),
+  });
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<any | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-
-  const navigate = useRouter();
-
-  // Fetch users with filters
-  const {
-    data: usersData,
-    isLoading,
-    isError,
-  } = useGetAllUsersQuery({
-    searchTerm: searchQuery,
-    status: statusFilter,
+  const { data: usersData, isError } = useGetAllUsersQuery({
     page: 1,
     limit: 10,
   });
-
+  const [selectedUser, setSelectedUser] = useState<any | null>(null);
   // Mutations
   const [blockUser, { isLoading: isBlocking }] = useBlockUserMutation();
 
@@ -81,60 +116,137 @@ export default function UserManagement() {
     setSelectedUser(userId);
     setIsCreateModalOpen(true);
   };
-  if (usersData === null || isLoading)
-    return (
-      <div className="h-80 flex items-center justify-center">
-        <Spinner />
-      </div>
-    );
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const stats = data.data || null;
+
+  const {
+    activeUsers,
+    engagementRate,
+    totalContentViews,
+    monthRevenue,
+    totalSubscribers,
+    financeOverview,
+    usageEngagementTrends,
+    revenueChart,
+  } = stats;
+
+  console.log(stats);
   return (
-    <DashboardLayout>
-      <div className="space-y-6 bg-white p-10 rounded-l">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold">User Management</h1>
-            <Select
-              value={statusFilter}
-              onValueChange={(value) => setStatusFilter(value)}
-            >
-              <SelectTrigger className="w-[180px] text-sm">
-                <SelectValue placeholder="All" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All</SelectItem>
-                <SelectItem value="active">
-                  <Badge className="bg-green-100 text-green-800 border border-green-700">
-                    Active
-                  </Badge>
-                </SelectItem>
-                <SelectItem value="expired">
-                  <Badge className="bg-red-100 text-red-800 border border-red-700">
-                    Expired
-                  </Badge>
-                </SelectItem>
-                <SelectItem value="inactive">
-                  <Badge className="bg-yellow-100 text-yellow-800 border border-yellow-300">
-                    Inactive
-                  </Badge>
-                </SelectItem>
-              </SelectContent>
-            </Select>
+    <>
+      <DashboardLayout>
+        <div className="space-y-6">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="text-center items-center">
+              <CardContent className="items-center space-y-4">
+                <CardTitle className="text-sm font-medium text-gray-600 text-nowrap">
+                  Active Users
+                </CardTitle>
+                <div className="text-2xl font-bold">{activeUsers.count}</div>
+                <div
+                  className={`flex items-center gap-1 text-sm ${
+                    activeUsers.percentageChange > 0
+                      ? "text-green-600"
+                      : "text-red-600"
+                  } mt-1`}
+                >
+                  {activeUsers.percentageChange > 0 ? (
+                    <TrendingUp className="w-4 h-4" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4" />
+                  )}
+                  <span>{activeUsers.percentageChange}</span>
+                  <span className="text-gray-500">From the last month</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="text-center items-center">
+              <CardContent className="items-center space-y-4">
+                <CardTitle className="text-sm font-medium text-gray-600 text-nowrap">
+                  Engagement Rate
+                </CardTitle>
+                <div className="text-2xl font-bold">{engagementRate.rate}</div>
+                <div
+                  className={`flex items-center gap-1 text-sm ${
+                    engagementRate.percentageChange > 0
+                      ? "text-green-600"
+                      : "text-red-600"
+                  } mt-1`}
+                >
+                  {engagementRate.percentageChange > 0 ? (
+                    <TrendingUp className="w-4 h-4" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4" />
+                  )}
+                  <span>{engagementRate.percentageChange}</span>
+                  <span className="text-gray-500">From the last month</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="text-center items-center">
+              <CardContent className="items-center space-y-4">
+                <CardTitle className="text-sm font-medium text-gray-600 text-nowrap">
+                  Total Content Views
+                </CardTitle>
+                <div className="text-2xl font-bold">
+                  {totalContentViews.count}
+                </div>
+                <div
+                  className={`flex items-center gap-1 text-sm ${
+                    totalContentViews.percentageChange > 0
+                      ? "text-green-600"
+                      : "text-red-600"
+                  } mt-1`}
+                >
+                  {totalContentViews.percentageChange > 0 ? (
+                    <TrendingUp className="w-4 h-4" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4" />
+                  )}
+                  <span>{totalContentViews.percentageChange}</span>
+                  <span className="text-gray-500">From the last month</span>
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          <div className="relative w-64">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-            <Input
-              placeholder="Search"
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 max-h-[800px]">
+            {/* Usage Chart */}
+
+            <div className="lg:col-span-2">
+              <StatisticBarChart
+                rawChartData={usageEngagementTrends}
+                monthRevenue={monthRevenue}
+                totalSubscribers={totalSubscribers}
+                year={year}
+                setYear={setYear}
+              />
+            </div>
+
+            {/* Finance Overview */}
+            <FinanceOverviewChart
+              financeChartData={revenueChart}
+              financeOverview={financeOverview}
             />
           </div>
-        </div>
 
-        <Card>
-          <CardContent>
+          {/* User Management Preview */}
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle>User Management</CardTitle>
+                <Link href="/users">
+                  <Button variant="link" className="text-primary font-bold">
+                    See All
+                  </Button>
+                </Link>
+              </div>
+            </CardHeader>
+              <CardContent>
             <div className="overflow-x-auto">
               <Table className="w-full">
                 <TableHeader>
@@ -184,7 +296,7 @@ export default function UserManagement() {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    usersData.data.map((user: any) => (
+                    usersData.data.slice(0, 4).map((user: any) => (
                       <TableRow className="border-b" key={user._id}>
                         <TableCell className="p-3">
                           <div className="flex items-center gap-2">
@@ -274,10 +386,11 @@ export default function UserManagement() {
               </Table>
             </div>
           </CardContent>
-        </Card>
-      </div>
+          </Card>
+        </div>
 
-      <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+
+        <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
         <DialogContent className="max-w-2xl w-full space-y-5">
           {selectedUser ? (
             <>
@@ -343,6 +456,9 @@ export default function UserManagement() {
           )}
         </DialogContent>
       </Dialog>
-    </DashboardLayout>
+      </DashboardLayout>
+    </>
   );
-}
+};
+
+export default HomePage;

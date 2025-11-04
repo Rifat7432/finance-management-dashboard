@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 import {
   BarChart,
   Bar,
@@ -10,38 +10,11 @@ import {
   YAxis,
   ResponsiveContainer,
   Tooltip,
-} from "recharts"
+} from "recharts";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-import { YearPicker } from "@/components/shared/YearPicker"
-
-
-// Raw data (in thousands for realism)
-const rawChartData: Array<{ month: string; value: number }> = [
-  { month: "January", value: 11000 },
-  { month: "February", value: 13000 },
-  { month: "March", value: 10300 },
-  { month: "April", value: 9500 },
-  { month: "May", value: 102000 },
-  { month: "June", value: 11000 },
-  { month: "July", value: 14000 },
-  { month: "August", value: 11500 },
-  { month: "September", value: 10200 },
-  { month: "October", value: 10100 },
-  { month: "November", value: 10100 },
-  { month: "December", value: 10100 },
-]
-
-// Chart config
-const yStep = 2500
-const maxY = 15000
-const segments = maxY / yStep
+import { YearPicker } from "@/components/shared/YearPicker";
 
 // Colors from darkest (bottom) to lightest (top)
 const barColors = [
@@ -51,37 +24,12 @@ const barColors = [
   "#636AE8",
   "#636AE8",
   "#847DFA",
-]
-
-// Generate explicit Y ticks array
-const yTicks = Array.from({ length: segments + 1 }, (_, i) => i * yStep)
-
-// Transform raw data to split into segments for stacked bars
-const chartData = rawChartData.map((entry) => {
-  const segmented: any = {
-    month: entry.month,
-    value: entry.value,
-  }
-  let remaining = entry.value
-
-  for (let i = 0; i < segments; i++) {
-    const levelKey = `level${i + 1}`
-    if (remaining >= yStep) {
-      segmented[levelKey] = yStep
-      remaining -= yStep
-    } else {
-      segmented[levelKey] = remaining
-      remaining = 0
-    }
-  }
-
-  return segmented
-})
+];
 
 // Custom tooltip showing total value
 function CustomTooltip({ active, payload, label }: any) {
   if (active && payload && payload.length) {
-    const totalValue = payload[0].payload.value
+    const totalValue = payload[0].payload.value;
     return (
       <div className="bg-white p-3 border rounded-lg shadow-lg">
         <p className="font-semibold text-gray-900">{label}</p>
@@ -89,24 +37,81 @@ function CustomTooltip({ active, payload, label }: any) {
           Value: {totalValue.toLocaleString()}
         </p>
       </div>
-    )
+    );
   }
-  return null
+  return null;
 }
 
-export default function StatisticBarChart() {
-  const [isMobile, setIsMobile] = React.useState(false)
+export default function StatisticBarChart({
+  rawChartData,
+  monthRevenue,
+  totalSubscribers,
+  year,
+  setYear,
+}: {
+  rawChartData: Array<{ month: string; value: number }>;
+  monthRevenue: { amount: number; percentageChange: number };
+  totalSubscribers: number;
+  year: number | undefined;
+  setYear: any;
+}) {
+  // Chart config
+  const maxY = Math.max(...rawChartData.map((d) => d.value)) || 15000;
+
+  const yStep =
+    maxY <= 6000
+      ? 1000
+      : maxY <= 10000
+      ? 2000
+      : maxY <= 15000
+      ? 3000
+      : maxY <= 30000
+      ? 5000
+      : maxY <= 100000
+      ? 10000
+      : maxY <= 500000
+      ? 50000
+      : maxY <= 1000000
+      ? 100000
+      : 200000;
+  const segments = maxY / yStep;
+
+  // Generate explicit Y ticks array
+  const yTicks = Array.from({ length: segments + 1 }, (_, i) => i * yStep);
+
+  // Transform raw data to split into segments for stacked bars
+  const chartData = rawChartData.map((entry) => {
+    const segmented: any = {
+      month: entry.month,
+      value: entry.value,
+    };
+    let remaining = entry.value;
+
+    for (let i = 0; i < segments; i++) {
+      const levelKey = `level${i + 1}`;
+      if (remaining >= yStep) {
+        segmented[levelKey] = yStep;
+        remaining -= yStep;
+      } else {
+        segmented[levelKey] = remaining;
+        remaining = 0;
+      }
+    }
+
+    return segmented;
+  });
+  const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 640)
-    }
+      setIsMobile(window.innerWidth < 640);
+    };
 
-    handleResize() // run once on mount
+    handleResize(); // run once on mount
 
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="w-full max-w-full">
@@ -123,18 +128,28 @@ export default function StatisticBarChart() {
                 <p className="text-sm lg:text-lg font-semibold whitespace-nowrap">
                   Month Revenue
                 </p>
-                <p className="text-green-600 font-semibold">+9%</p>
+                <p
+                  className={`${
+                    monthRevenue.percentageChange > 0
+                      ? "text-green-600"
+                      : "text-red-600"
+                  } font-semibold`}
+                >
+                  {monthRevenue.percentageChange}%
+                </p>
               </div>
 
               <div className="text-center sm:text-left">
                 <p className="text-sm lg:text-md font-semibold whitespace-nowrap">
                   Total Subscriber
                 </p>
-                <p className="text-blue-600 font-semibold">5,000</p>
+                <p className="text-blue-600 font-semibold">
+                  {totalSubscribers}
+                </p>
               </div>
 
               <div className="flex justify-center sm:justify-start">
-                <YearPicker/>
+                <YearPicker  year={year}  setYear={setYear}/>
               </div>
             </div>
           </div>
@@ -182,27 +197,23 @@ export default function StatisticBarChart() {
                 <Tooltip content={<CustomTooltip />} />
 
                 {Array.from({ length: segments }).map((_, i) => {
-                  const levelKey = `level${i + 1}`
-                  const isTopSegment = i === segments - 1
+                  const levelKey = `level${i + 1}`;
+                  const isTopSegment = i === segments - 1;
                   const allTopFull = chartData.every(
                     (entry) => entry[levelKey] === yStep
-                  )
+                  );
 
                   return (
                     <Bar
                       key={levelKey}
                       dataKey={levelKey}
                       stackId="a"
-                      fill={
-                        barColors[i] || barColors[barColors.length - 1]
-                      }
+                      fill={barColors[i] || barColors[barColors.length - 1]}
                       radius={
-                        isTopSegment && allTopFull
-                          ? [4, 4, 0, 0]
-                          : [0, 0, 0, 0]
+                        isTopSegment && allTopFull ? [4, 4, 0, 0] : [0, 0, 0, 0]
                       }
                     />
-                  )
+                  );
                 })}
               </BarChart>
             </ResponsiveContainer>
@@ -210,5 +221,5 @@ export default function StatisticBarChart() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

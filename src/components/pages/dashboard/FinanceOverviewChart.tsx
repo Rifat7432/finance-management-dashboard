@@ -1,12 +1,7 @@
 "use client";
 
 import { AreaChart, Area, XAxis, CartesianGrid } from "recharts";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
@@ -14,40 +9,43 @@ import {
   ChartConfig,
 } from "@/components/ui/chart";
 
-// Example chart data
-const financeChartData = [
-  { month: "January", revenue: 1200 },
-  { month: "February", revenue: 1800 },
-  { month: "March", revenue: 1350 },
-  { month: "April", revenue: 1600 },
-  { month: "May", revenue: 2000 },
-  { month: "June", revenue: 2450 },
-];
+
 
 // Chart config
-const financeChartConfig = {
-  revenue: {
-    label: "Revenue",
-    color: "var(--chart-1)",
-  },
-} satisfies ChartConfig;
 
-export function FinanceOverviewChart() {
+export function FinanceOverviewChart({
+  financeChartData,financeOverview
+}: {
+  financeChartData: {
+    month: string;
+    revenue: number;
+  }[];financeOverview:{
+    adRevenue:number;
+    subscription:number;
+    total:number;
+  }
+}) {
+  const financeChartConfig = {
+    value: {
+      label: "Revenue",
+      color: "var(--chart-1)",
+    },
+  } satisfies ChartConfig;
   return (
     <Card className="justify-between h-[680px]">
       <CardHeader>
         <CardTitle>Finance Overview</CardTitle>
-        <div className="text-3xl font-bold mb-2">£2450</div>
+        <div className="text-3xl font-bold mb-2">£{financeOverview.total}</div>
 
         <div className="space-y-4 my-4">
           {/* Reduced spacing to mb-4 */}
           <div className="flex justify-between">
             <span className="text-muted-foreground">Subscription</span>
-            <span>£2000</span>
+            <span>£{financeOverview.subscription}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-muted-foreground">Ad Revenue</span>
-            <span>£450</span>
+            <span>£{financeOverview.adRevenue}</span>
           </div>
         </div>
       </CardHeader>
@@ -76,7 +74,7 @@ export function FinanceOverviewChart() {
             />
             <Area
               type="natural"
-              dataKey="revenue"
+              dataKey="value"
               fill="var(--color-primary)"
               fillOpacity={0.3}
               stroke="var(--color-primary)"
