@@ -33,7 +33,6 @@ export function Header() {
       style={{ background: "var(--background)", color: "var(--foreground)" }}
     >
       <Button variant="ghost" size="icon" className="rounded-lg">
-        <Bell className="w-5 h-5" />
       </Button>
       <Avatar>
         <AvatarImage
