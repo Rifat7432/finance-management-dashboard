@@ -32,6 +32,7 @@ const ForgotPassword = () => {
       }
     } catch (err) {
       toast.error("Login Failed");
+      console.log(err);
     }
   };
 

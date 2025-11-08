@@ -11,10 +11,10 @@ import {
 } from "@/redux/features/ad/adSlice";
 import {
   useDeleteAdMutation,
-  useUpdateAdMutation,
 } from "@/redux/features/ad/adApi";
 import { TAdData, TResponse } from "@/global/global.interface";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface AdListProps {
   adsData?: any;
@@ -51,10 +51,13 @@ export default function AdList({ adsData }: AdListProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {ads.map((ad: any) => (
         <Card key={ad._id} className="shadow-lg rounded-2xl overflow-hidden">
-          <img
+          <Image
             src={ad.url} // Replace with actual image path
             alt="Budget Chart"
             className="w-full h-40 object-cover"
+            width={120}
+            height={120}
+            priority
           />
           <CardContent className="p-4 space-y-3">
             <h3 className="text-2xl font-bold leading-tight">{ad.name}</h3>

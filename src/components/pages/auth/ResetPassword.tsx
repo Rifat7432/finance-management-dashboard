@@ -48,6 +48,7 @@ const ResetPassword = ({ email, token }: { email: string; token: string }) => {
       }
     } catch (err) {
       toast.error("Login Failed");
+      console.log(err);
     }
   };
   return (

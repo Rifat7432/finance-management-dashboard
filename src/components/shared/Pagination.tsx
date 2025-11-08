@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useAppSelector } from "@/redux/hooks/hooks";
 
 interface PaginationProps {
   totalPages: number;

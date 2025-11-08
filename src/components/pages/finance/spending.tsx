@@ -1,32 +1,36 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  TrendingUp,
-  AlertCircle,
-  Lightbulb,
-  Calendar,
-  AlertTriangle,
-} from "lucide-react";
+import { TrendingUp, AlertCircle, Lightbulb } from "lucide-react";
 import Spinner from "../../shared/Spinner";
 import { useGetUserExpensesDetailsQuery } from "@/redux/features/finance/financeApi";
-const alerts = [
-  "Your food expenses are 35% above average.",
-  "You've overspent ₹1,200 on subscriptions.",
-  "Monthly spending has been consistently increasing for 3 months.",
-];
-
-const tips = [
-  "Reducing shopping expenses by 25% could save ₹2,500/month.",
-  "Controlling restaurant spending could save ₹15,000/year.",
-];
+import { useEffect, useState } from "react";
+import { useAppSelector } from "@/redux/hooks/hooks";
 
 export default function SpendingOverview({ userId }: { userId: string }) {
+  const { token } = useAppSelector((state) => state.auth);
+  const [aiInsights, setAiInSights] = useState<any>(null);
   const { data, isLoading } = useGetUserExpensesDetailsQuery(userId);
-  if (isLoading) {
+  useEffect(() => {
+    const fetchAiInsights = async () => {
+      fetch(
+        `${process.env.NEXT_PUBLIC_AI_BACKEND_URL}/admin/user-dashboard/${userId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+        .then((res) => res.json())
+        .then((aiData) => setAiInSights(aiData));
+    };
+    fetchAiInsights();
+  }, []);
+
+  if (isLoading || aiInsights === null) {
     return (
       <div className="h-80 flex items-center justify-center">
         <Spinner></Spinner>
@@ -34,7 +38,7 @@ export default function SpendingOverview({ userId }: { userId: string }) {
     );
   }
   return (
-    <DashboardLayout>
+    <>
       <div className="space-y-6 bg-white p-10 rounded-l">
         <h1 className="text-2xl font-bold">Spending Overview</h1>
 
@@ -136,12 +140,22 @@ export default function SpendingOverview({ userId }: { userId: string }) {
           <div>
             <h3 className="font-bold text-lg mb-3">Alerts</h3>
             <div className="space-y-3">
-              {alerts.map((alert, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-700">{alert}</span>
-                </div>
-              ))}
+              {aiInsights.currentAlerts.map(
+                ({
+                  userId,
+                  alertMessage,
+                }: {
+                  userId: string;
+                  alertMessage: string;
+                }) => (
+                  <div key={userId} className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">
+                      {alertMessage}
+                    </span>
+                  </div>
+                )
+              )}
             </div>
           </div>
 
@@ -149,49 +163,18 @@ export default function SpendingOverview({ userId }: { userId: string }) {
           <div>
             <h3 className="font-bold text-lg mb-3">AI Tips</h3>
             <div className="space-y-3">
-              {tips.map((tip, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <Lightbulb className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm text-gray-700">{tip}</span>
-                </div>
-              ))}
+              {aiInsights.aiTips.map(
+                ({ suggestion }: { suggestion: string }, index: number) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <Lightbulb className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700">{suggestion}</span>
+                  </div>
+                )
+              )}
             </div>
           </div>
         </div>
-
-        {/* Installment & Loan Info */}
-
-        <h3 className="font-bold text-lg mb-3">Installment & Loan Info</h3>
-
-        <div className="space-y-4">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
-            <span className="text-sm text-gray-700">Missed 2 installments</span>
-          </div>
-          <div className="flex items-start gap-3">
-            <Calendar className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
-            <span className="text-sm text-gray-700">
-              Next installment due date: 17 July
-            </span>
-          </div>
-          <div className="flex items-start gap-3">
-            <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-            <span className="text-sm text-gray-700">
-              Status: 🟡 Medium Risk
-            </span>
-          </div>
-        </div>
-
-        {/* Peer Comparison */}
-
-        <h3 className="font-bold text-lg mb-3">Peer Comparison</h3>
-        <div>
-          <p className="text-sm text-gray-700">
-            You spend 22% more on shopping compared to others in your age/income
-            group.
-          </p>
-        </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

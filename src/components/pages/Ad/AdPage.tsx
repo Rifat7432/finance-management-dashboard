@@ -1,7 +1,5 @@
-/* eslint-disable prefer-const */
 "use client";
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import Pagination from "@/components/shared/Pagination";
 import { useGetAdsQuery } from "@/redux/features/ad/adApi";
@@ -23,7 +21,7 @@ export default function AdManagementPage() {
     ...{},
   });
   return (
-    <DashboardLayout>
+   
       <div className="space-y-6 bg-white p-10 rounded-l">
         <div className="flex items-center justify-between">
           <div className="flex gap-2"></div>
@@ -53,6 +51,5 @@ export default function AdManagementPage() {
           />
         )}
       </div>
-    </DashboardLayout>
   );
 }

@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-"use client";
 
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -9,16 +8,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Controller, FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import UploadFile from "@/components/shared/UploadFile";
 import { toast } from "sonner";
 import { TAdData, TResponse } from "@/global/global.interface";
@@ -80,6 +72,7 @@ const CreateAdModal = () => {
       return false;
     } catch (err) {
       toast.error("Ad Creation Failed");
+         console.log(err);
       return false;
     }
   };

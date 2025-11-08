@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { FieldValues, useForm } from "react-hook-form";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -41,7 +40,6 @@ export default function LoginPage() {
         if (res?.data?.data) {
           localStorage.setItem("accessToken", res?.data?.data.accessToken);
           const decoded = jwtDecode(res?.data?.data.accessToken);
-          console.log(decoded);
           const { exp, iat, ...rest } = decoded;
           if (
             typeof rest === "object" &&
@@ -50,6 +48,7 @@ export default function LoginPage() {
             rest.role === "ADMIN"
           ) {
             dispatch(storToken(res?.data?.data.accessToken));
+            localStorage.setItem("token", res?.data?.data.accessToken);
             return dispatch(storUserData(rest));
           } else {
             toast.error("Unauthorized Access");
@@ -58,6 +57,7 @@ export default function LoginPage() {
       }
     } catch (err) {
       toast.error("Login Failed");
+           console.log(err);
     }
   };
 

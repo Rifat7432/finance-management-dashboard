@@ -88,7 +88,7 @@ const FinancePage = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data?.data?.users?.map((user: any, i: number) => (
+                  {data?.data?.users?.map((user: any) => (
                     <TableRow
                       key={user._id}
                       className="border-b hover:bg-gray-50"

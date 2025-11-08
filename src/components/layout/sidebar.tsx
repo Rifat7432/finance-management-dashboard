@@ -7,15 +7,14 @@ import {
   LayoutDashboard,
   Users,
   BarChart3,
-  CreditCard,
   Video,
   CalendarCheck,
   Settings,
   LogOut,
-  Shield,
 } from "lucide-react";
 import { useAppDispatch } from "@/redux/hooks/hooks";
 import { logOut } from "@/redux/features/auth/authSlice";
+import Image from "next/image";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
@@ -36,7 +35,7 @@ export function Sidebar() {
       {/* Logo */}
       <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-200">
         <div className="flex items-center justify-center w-10 h-10 rounded">
-      <img src="/logo.png" alt="logo" />
+     <Image src="/logo.png" alt="logo" width={120} height={40} priority />
         </div>
         <span className="text-xl font-semibold text-gray-900">ROHU APP </span>
       </div>

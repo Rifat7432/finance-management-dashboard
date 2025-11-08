@@ -1,18 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Controller, FieldValues, useForm } from "react-hook-form";
+import {  FieldValues, useForm } from "react-hook-form";
 import UploadFile from "@/components/shared/UploadFile";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -28,7 +19,6 @@ interface AdData {
   url?: File | string | null;
 }
 
-const categories = ["Budget", "Shopping", "Subscriptions"];
 
 const UpdateAdModal = () => {
   const { updateAd: defaultValues, isUpdateModalOpen } = useAppSelector(
@@ -96,6 +86,7 @@ const UpdateAdModal = () => {
       return false;
     } catch (err) {
       toast.error("Ad Update Failed");
+      console.log(err);
       return false;
     }
   };
@@ -117,9 +108,7 @@ const UpdateAdModal = () => {
               className="w-full my-2"
             />
             {errors.name && (
-              <p className="text-red-400 text-xs mt-1">
-                {errors.name.message}
-              </p>
+              <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>
             )}
           </div>
           <div className="grid grid-cols-2 gap-4">

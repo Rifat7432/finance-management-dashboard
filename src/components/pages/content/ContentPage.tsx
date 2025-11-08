@@ -1,7 +1,5 @@
-/* eslint-disable prefer-const */
 "use client";
 
-import { DashboardLayout } from "@/components/layout/dashboard-layout";
 import { Button } from "@/components/ui/button";
 import ContentList from "@/components/pages/content/ContentList";
 import CreateContentModal from "@/components/pages/content/ContenetModels/CreateContentModal";
@@ -34,7 +32,7 @@ export default function ContentPage() {
     ...(contentCategory === "All" ? {} : { category: contentCategory }),
   });
   return (
-    <DashboardLayout>
+    <>
       <div className="space-y-6 bg-white p-10 rounded-l">
         {/* Category buttons + Upload */}
         <div className="flex items-center justify-between">
@@ -69,6 +67,6 @@ export default function ContentPage() {
           <Pagination setPage={(page)=> dispatch(setPage(page))} totalPages={Number(videosData?.data?.meta?.totalPage)} page={page}/>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

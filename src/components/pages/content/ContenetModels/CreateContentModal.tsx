@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -92,6 +92,7 @@ const CreateContentModal = () => {
       return false;
     } catch (err) {
       toast.error("Content Upload Failed");
+      console.log(err);
       return false;
     }
   };

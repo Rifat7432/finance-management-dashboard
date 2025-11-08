@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -66,10 +66,9 @@ const UpdateContentModal = () => {
       try {
         const durationInSeconds = await getVideoDuration(contentData.video);
         duration = Math.round(durationInSeconds);
-        console.log("Extracted video duration:", duration);
         formData.append("video", contentData.video);
       } catch (error) {
-        console.error("Failed to get video duration:", error);
+        console.error(error);
         toast.error("Failed to read video duration");
         return false;
       }
@@ -104,6 +103,7 @@ const UpdateContentModal = () => {
       return false;
     } catch (err) {
       toast.error("Content Update Failed");
+      console.log(err);
       return false;
     }
   };

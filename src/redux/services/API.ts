@@ -33,15 +33,22 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     toast.error("User not found");
   }
   if (result.error?.status === 401) {
-    const res = await fetch("http://localhost:5000/api/v1/auth/refresh-token", {
-      method: "POST",
-      credentials: "include",
-    });
-    const data = await res.json();
-    if (data.success) {
-      api.dispatch(storToken(data.data.accessToken));
-      result = await baseQuery(args, api, extraOptions);
-    } else {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/refresh-token`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      if (data.success) {
+        api.dispatch(storToken(data.data.accessToken));
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        api.dispatch(logOut());
+      }
+    } catch (error) {
       api.dispatch(logOut());
     }
   }
@@ -51,6 +58,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["getUser", "getAppointments", "getContents","getAds"],
+  tagTypes: ["getUser", "getAppointments", "getContents", "getAds"],
   endpoints: () => ({}),
 });

@@ -1,11 +1,13 @@
 
+import { DashboardLayout } from '@/components/layout/dashboard-layout';
 import AdManagementPage from '@/components/pages/Ad/AdPage';
 import React from 'react';
 
 const AdManagement = () => {
   return (
     <div>
-      <AdManagementPage/>
+       <DashboardLayout> <AdManagementPage/></DashboardLayout>
+     
     </div>
   );
 };
