@@ -142,13 +142,11 @@ export default function SpendingOverview({ userId }: { userId: string }) {
             <div className="space-y-3">
               {aiInsights?.currentAlerts?.map(
                 ({
-                  userId,
                   alertMessage,
                 }: {
-                  userId: string;
                   alertMessage: string;
-                }) => (
-                  <div key={userId} className="flex items-start gap-3">
+                },i:number) => (
+                  <div key={i} className="flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
                     <span className="text-sm text-gray-700">
                       {alertMessage}
