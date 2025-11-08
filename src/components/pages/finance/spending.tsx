@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, AlertCircle, Lightbulb } from "lucide-react";
+import { TrendingUp, AlertCircle, Lightbulb, AlertTriangle, Calendar } from "lucide-react";
 import Spinner from "../../shared/Spinner";
 import { useGetUserExpensesDetailsQuery } from "@/redux/features/finance/financeApi";
 import { useEffect, useState } from "react";
@@ -140,7 +140,7 @@ export default function SpendingOverview({ userId }: { userId: string }) {
           <div>
             <h3 className="font-bold text-lg mb-3">Alerts</h3>
             <div className="space-y-3">
-              {aiInsights.currentAlerts.map(
+              {aiInsights?.currentAlerts?.map(
                 ({
                   userId,
                   alertMessage,
@@ -163,7 +163,7 @@ export default function SpendingOverview({ userId }: { userId: string }) {
           <div>
             <h3 className="font-bold text-lg mb-3">AI Tips</h3>
             <div className="space-y-3">
-              {aiInsights.aiTips.map(
+              {aiInsights?.aiTips?.map(
                 ({ suggestion }: { suggestion: string }, index: number) => (
                   <div key={index} className="flex items-start gap-3">
                     <Lightbulb className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
@@ -173,6 +173,39 @@ export default function SpendingOverview({ userId }: { userId: string }) {
               )}
             </div>
           </div>
+
+
+            {/* Installment & Loan Info */}
+
+        <h3 className="font-bold text-lg mb-3">Installment & Loan Info</h3>
+
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-gray-700">{aiInsights?.debtStatuses?.missedInstallments}</span>
+          </div>
+          <div className="flex items-start gap-3">
+            <Calendar className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-gray-700">
+             {aiInsights?.debtStatuses?.nextDueDate}
+            </span>
+          </div>
+          <div className="flex items-start gap-3">
+            <AlertCircle className="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" />
+            <span className="text-sm text-gray-700">
+              {aiInsights?.debtStatuses?.status}
+            </span>
+          </div>
+        </div>
+
+        {/* Peer Comparison */}
+
+        <h3 className="font-bold text-lg mb-3">Peer Comparison</h3>
+        <div>
+          <p className="text-sm text-gray-700">
+            {aiInsights?.peerComparison?.comparison}
+          </p>
+        </div>
         </div>
       </div>
     </>
