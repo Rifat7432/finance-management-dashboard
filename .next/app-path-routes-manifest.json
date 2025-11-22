@@ -1,0 +1,15 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/auth/login/page": "/auth/login",
+  "/appointment/page": "/appointment",
+  "/ad/page": "/ad",
+  "/content/page": "/content",
+  "/auth/forgot-password/page": "/auth/forgot-password",
+  "/finance/[userId]/page": "/finance/[userId]",
+  "/finance/page": "/finance",
+  "/auth/reset-password/page": "/auth/reset-password",
+  "/notifications/[userId]/page": "/notifications/[userId]",
+  "/page": "/",
+  "/users/page": "/users"
+}
