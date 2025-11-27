@@ -25,7 +25,6 @@ export default function SpendingOverview({ userId }: { userId: string }) {
         }
       )
         .then((res) => { 
-          console.log(res)
           return res.json()})
         .then((aiData) => setAiInSights(aiData));
     };

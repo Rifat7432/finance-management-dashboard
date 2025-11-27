@@ -40,7 +40,7 @@ const HomePage = () => {
     year: year ? year : new Date().getFullYear(),
   });
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const { data: usersData, isError } = useGetAllUsersQuery({
+  const { data: usersData, isError,isLoading:userLoading } = useGetAllUsersQuery({
     page: 1,
     limit: 10,
   });
@@ -58,8 +58,7 @@ const HomePage = () => {
         return toast.success(res.data.message);
       }
     } catch (err) {
-      toast.error("Login Failed");
-           console.log(err);
+      toast.error("Request Failed");
     }
   };
 
@@ -68,7 +67,7 @@ const HomePage = () => {
     setIsCreateModalOpen(true);
   };
 
-  if (usersData === null || isLoading)
+  if (usersData === null || isLoading || data?.data === null || userLoading)
     return (
       <div className="h-80 flex items-center justify-center">
         <Spinner />
@@ -77,7 +76,7 @@ const HomePage = () => {
 
 
   const stats = data?.data || null;
-
+console.log(stats.activeUsers)
   const {
     activeUsers,
     engagementRate,
@@ -89,7 +88,6 @@ const HomePage = () => {
     revenueChart,
   } = stats;
 
-  console.log(stats);
   return (
     <>
   

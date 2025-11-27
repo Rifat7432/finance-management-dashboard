@@ -50,7 +50,6 @@ const AppointmentList = ({
 }) => {
   const [updateAppointment] = useUpdateAppointmentMutation();
   const handelCompleteAppointment = async (id: string) => {
-    console.log(id)
     try {
       const res = (await updateAppointment(id)) as TResponse<TAppointment>;
 

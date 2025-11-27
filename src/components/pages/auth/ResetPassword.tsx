@@ -47,7 +47,7 @@ const ResetPassword = ({ email, token }: { email: string; token: string }) => {
         navigate.push("/auth/login");
       }
     } catch (err) {
-      toast.error("Login Failed");
+      toast.error("Request Failed");
       console.log(err);
     }
   };

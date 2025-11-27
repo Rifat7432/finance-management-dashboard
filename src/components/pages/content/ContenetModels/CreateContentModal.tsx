@@ -56,9 +56,7 @@ const CreateContentModal = () => {
       try {
         const durationInSeconds = await getVideoDuration(contentData.video);
         duration = Math.round(durationInSeconds); // Duration in seconds
-        console.log("Extracted video duration:", duration);
       } catch (error) {
-        console.error("Failed to get video duration:", error);
         toast.error("Failed to read video duration");
         return false;
       }
@@ -92,7 +90,6 @@ const CreateContentModal = () => {
       return false;
     } catch (err) {
       toast.error("Content Upload Failed");
-      console.log(err);
       return false;
     }
   };

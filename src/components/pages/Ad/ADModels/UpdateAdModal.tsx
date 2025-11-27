@@ -86,7 +86,6 @@ const UpdateAdModal = () => {
       return false;
     } catch (err) {
       toast.error("Ad Update Failed");
-      console.log(err);
       return false;
     }
   };

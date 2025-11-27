@@ -103,7 +103,6 @@ const UpdateContentModal = () => {
       return false;
     } catch (err) {
       toast.error("Content Update Failed");
-      console.log(err);
       return false;
     }
   };

@@ -68,7 +68,6 @@ const NotificationPage = ({ userId }: { userId: string }) => {
       }
     } catch (err) {
       toast.error("Notification update failed.");
-      console.log(err);
       // Revert toggle if error
       setSettings(settings);
     }

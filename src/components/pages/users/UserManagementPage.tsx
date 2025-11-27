@@ -66,8 +66,7 @@ export default function UserManagementPage() {
         return toast.success(res.data.message);
       }
     } catch (err) {
-      toast.error("Login Failed");
-      console.log(err);
+      toast.error("Request Failed");
     }
   };
 
