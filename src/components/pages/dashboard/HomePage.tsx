@@ -76,7 +76,6 @@ const HomePage = () => {
 
 
   const stats = data?.data || null;
-console.log(stats.activeUsers)
   const {
     activeUsers,
     engagementRate,

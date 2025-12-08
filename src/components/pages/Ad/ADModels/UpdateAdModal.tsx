@@ -19,7 +19,6 @@ interface AdData {
   url?: File | string | null;
 }
 
-
 const UpdateAdModal = () => {
   const { updateAd: defaultValues, isUpdateModalOpen } = useAppSelector(
     (state) => state.ad
@@ -53,8 +52,8 @@ const UpdateAdModal = () => {
     const formData = new FormData();
 
     // Append video if updated
-    if (adData.video instanceof File) {
-      formData.append("image", adData.video);
+    if (adData.url instanceof File) {
+      formData.append("image", adData.url);
     }
 
     const data = {
