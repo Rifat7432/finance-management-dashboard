@@ -2,14 +2,14 @@
   "/favicon.ico/route": "/favicon.ico",
   "/_not-found/page": "/_not-found",
   "/ad/page": "/ad",
+  "/auth/forgot-password/page": "/auth/forgot-password",
   "/appointment/page": "/appointment",
   "/auth/login/page": "/auth/login",
-  "/auth/forgot-password/page": "/auth/forgot-password",
   "/auth/reset-password/page": "/auth/reset-password",
+  "/finance/page": "/finance",
   "/content/page": "/content",
   "/finance/[userId]/page": "/finance/[userId]",
-  "/finance/page": "/finance",
   "/notifications/[userId]/page": "/notifications/[userId]",
-  "/page": "/",
-  "/users/page": "/users"
+  "/users/page": "/users",
+  "/page": "/"
 }

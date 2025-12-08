@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {  FieldValues, useForm } from "react-hook-form";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 import UploadFile from "@/components/shared/UploadFile";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -11,9 +11,17 @@ import { TAdData, TResponse } from "@/global/global.interface";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { useUpdateAdMutation } from "@/redux/features/ad/adApi";
 import { setIsUpdateAdModalOpen } from "@/redux/features/ad/adSlice";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface AdData {
   name: string;
+  category: string;
   startDate: string;
   endDate: string;
   url?: File | string | null;
@@ -36,6 +44,7 @@ const UpdateAdModal = () => {
     defaultValues: defaultValues || {
       name: "",
       startDate: "",
+      category: "",
       endDate: "",
       url: null,
     },
@@ -107,6 +116,33 @@ const UpdateAdModal = () => {
             />
             {errors.name && (
               <p className="text-red-400 text-xs mt-1">{errors.name.message}</p>
+            )}
+          </div>
+          <div>
+            <Label htmlFor="category">Ad Category</Label>
+            <Controller
+              name="category"
+              control={control}
+              rules={{ required: "Category is required" }}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="w-full my-2">
+                    <SelectValue placeholder="Select The Ad Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Budget">Budget</SelectItem>
+                    <SelectItem value="Debt">Debt</SelectItem>
+                    <SelectItem value="Saving">Saving</SelectItem>
+                    <SelectItem value="Investment">Investment</SelectItem>
+                    <SelectItem value="Taxation">Taxation</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.category && (
+              <p className="text-red-400 text-xs mt-1">
+                {errors.category.message as string}
+              </p>
             )}
           </div>
           <div className="grid grid-cols-2 gap-4">

@@ -1,4 +1,3 @@
-
 "use client";
 import {
   Dialog,
@@ -10,13 +9,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { FieldValues, useForm } from "react-hook-form";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 import UploadFile from "@/components/shared/UploadFile";
 import { toast } from "sonner";
 import { TAdData, TResponse } from "@/global/global.interface";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { useCreateAdMutation } from "@/redux/features/ad/adApi";
 import { setIsCreateAdModalOpen } from "@/redux/features/ad/adSlice";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const CreateAdModal = () => {
   const { isCreateModalOpen } = useAppSelector((state) => state.ad);
@@ -32,6 +38,7 @@ const CreateAdModal = () => {
   } = useForm({
     defaultValues: {
       name: "",
+      category: "",
       startDate: "",
       endDate: "",
       url: null,
@@ -46,6 +53,7 @@ const CreateAdModal = () => {
 
     const data = {
       name: adData.name,
+      category: adData.category,
       startDate: adData.startDate,
       endDate: adData.endDate,
     };
@@ -72,7 +80,7 @@ const CreateAdModal = () => {
       return false;
     } catch (err) {
       toast.error("Ad Creation Failed");
-         console.log(err);
+      console.log(err);
       return false;
     }
   };
@@ -104,6 +112,33 @@ const CreateAdModal = () => {
             {errors.name && (
               <p className="text-red-400 text-xs mt-1">
                 {errors.name.message as string}
+              </p>
+            )}
+          </div>
+          <div>
+            <Label htmlFor="category">Ad Category</Label>
+            <Controller
+              name="category"
+              control={control}
+              rules={{ required: "Category is required" }}
+              render={({ field }) => (
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <SelectTrigger className="w-full my-2">
+                    <SelectValue placeholder="Select The Ad Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Budget">Budget</SelectItem>
+                    <SelectItem value="Debt">Debt</SelectItem>
+                    <SelectItem value="Saving">Saving</SelectItem>
+                    <SelectItem value="Investment">Investment</SelectItem>
+                    <SelectItem value="Taxation">Taxation</SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            {errors.category && (
+              <p className="text-red-400 text-xs mt-1">
+                {errors.category.message as string}
               </p>
             )}
           </div>
