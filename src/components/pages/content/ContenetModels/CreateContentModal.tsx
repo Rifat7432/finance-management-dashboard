@@ -41,7 +41,7 @@ const CreateContentModal = () => {
       video: null,
     },
   });
-  const [addContent] = useCreateContentMutation();
+  const [addContent,{isLoading}] = useCreateContentMutation();
 
   const handleCreateContent = async (contentData: FieldValues) => {
     console.log("Creating content:", contentData);
@@ -49,17 +49,24 @@ const CreateContentModal = () => {
     // Create FormData object
     const formData = new FormData();
 
-    let duration = contentData.duration;
 
-    // Get duration from video file if it exists
-    if (contentData.video instanceof File) {
-      try {
-        const durationInSeconds = await getVideoDuration(contentData.video);
-        duration = Math.round(durationInSeconds); // Duration in seconds
-      } catch (error) {
-        toast.error("Failed to read video duration");
-        return false;
-      }
+ let duration = contentData.duration;
+
+// Get duration from video file if it exists
+if (contentData.video instanceof File) {
+  try {
+    const durationInSeconds = await getVideoDuration(contentData.video);
+    duration = Math.round(durationInSeconds); // Duration in seconds
+
+    // ✅ 3 minutes = 180 seconds validation
+    if (duration > 180) {
+      toast.error("Video duration must be 3 minutes or less");
+      return false;
+    }
+  } catch (error) {
+    toast.error("Failed to read video duration");
+    return false;
+  }
 
       // Append the video file
       formData.append("video", contentData.video);
@@ -168,7 +175,7 @@ const CreateContentModal = () => {
           />
 
           <Button type="submit" className="w-full">
-            Upload Video
+            {  isLoading? 'Loading...':'Upload Video'}
           </Button>
         </form>
       </DialogContent>

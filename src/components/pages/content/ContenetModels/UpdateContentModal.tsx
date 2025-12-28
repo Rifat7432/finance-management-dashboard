@@ -31,7 +31,7 @@ const UpdateContentModal = () => {
     (state) => state.content
   );
   const dispatch = useAppDispatch();
-  const [updateContent] = useUpdateContentMutation();
+  const [updateContent,{isLoading}] = useUpdateContentMutation();
   const {
     control,
     register,
@@ -61,18 +61,25 @@ const UpdateContentModal = () => {
         : 0
     ); // Extract number from "XX seconds"
 
-    // Get duration from new video file if uploaded
-    if (contentData.video instanceof File) {
-      try {
-        const durationInSeconds = await getVideoDuration(contentData.video);
-        duration = Math.round(durationInSeconds);
-        formData.append("video", contentData.video);
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to read video duration");
-        return false;
-      }
+// Get duration from video file if it exists
+if (contentData.video instanceof File) {
+  try {
+    const durationInSeconds = await getVideoDuration(contentData.video);
+    duration = Math.round(durationInSeconds); // Duration in seconds
+
+    // ✅ 3 minutes = 180 seconds validation
+    if (duration > 180) {
+      toast.error("Video duration must be 3 minutes or less");
+      return false;
     }
+  } catch (error) {
+    toast.error("Failed to read video duration");
+    return false;
+  }
+
+  // Append the video file only if duration is valid
+  formData.append("video", contentData.video);
+}
 
     // Create the data object
     const data = {
@@ -172,7 +179,7 @@ const UpdateContentModal = () => {
           />
 
           <Button type="submit" className="w-full">
-            Update Video
+            {  isLoading? 'Loading...':'Update Video'}
           </Button>
         </form>
       </DialogContent>

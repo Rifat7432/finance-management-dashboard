@@ -49,6 +49,9 @@ export type TAppointment = {
   _id: string;
   name: string;
   email: string;
+  title: string;
+  number: string;
+  bestContact: string;
   attendant: string;
   isChild: boolean;
   approxIncome: number;
@@ -65,6 +68,7 @@ export type TAppointment = {
     image: string;
   };
   status: "pending" | "complete";
+  UTCDate?: Date;
 };
 export type TUpdateData = {
   accessToken: string;

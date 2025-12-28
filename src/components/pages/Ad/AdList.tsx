@@ -65,7 +65,7 @@ export default function AdList({ adsData }: AdListProps) {
               <div className="flex items-center text-sm gap-2 text-[#000000]">
                 <p>Ads Duration:</p>
                 <p>
-                  <span>{ad.startDate}</span> - <span>{ad.endDate}</span>
+                  <span>{new Date(ad.startDate).toISOString().slice(0, 10)}</span> - <span>{new Date(ad.endDate).toISOString().slice(0, 10)}</span>
                 </p>
               </div>
             </div>

@@ -27,7 +27,7 @@ import {
 const CreateAdModal = () => {
   const { isCreateModalOpen } = useAppSelector((state) => state.ad);
   const dispatch = useAppDispatch();
-  const [createAd] = useCreateAdMutation();
+  const [createAd,{isLoading}] = useCreateAdMutation();
 
   const {
     control,
@@ -178,7 +178,7 @@ const CreateAdModal = () => {
           <UploadFile
             name="url"
             control={control}
-            caption="Upload Ad Video"
+            caption="Upload Ad"
             accept="image/*"
             maxSize={100 * 1024 * 1024}
             error={errors.url?.message as string}
@@ -186,7 +186,7 @@ const CreateAdModal = () => {
           />
 
           <Button type="submit" className="w-full">
-            Create Ad
+            {  isLoading? 'Loading...':'Create Ad'}
           </Button>
         </form>
       </DialogContent>

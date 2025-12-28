@@ -37,7 +37,7 @@ export function Sidebar() {
         <div className="flex items-center justify-center w-10 h-10 rounded">
      <Image src="/logo.png" alt="logo" width={120} height={40} priority />
         </div>
-        <span className="text-xl font-semibold text-gray-900">ROHU APP </span>
+        <span className="text-xl font-semibold text-gray-900">REHO APP </span>
       </div>
 
       {/* Navigation */}

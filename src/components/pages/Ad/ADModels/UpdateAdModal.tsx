@@ -32,7 +32,7 @@ const UpdateAdModal = () => {
     (state) => state.ad
   );
   const dispatch = useAppDispatch();
-  const [updateAd] = useUpdateAdMutation();
+  const [updateAd,{isLoading}] = useUpdateAdMutation();
 
   const {
     control,
@@ -181,7 +181,7 @@ const UpdateAdModal = () => {
           <UploadFile
             name="url"
             control={control}
-            caption="Upload new ad video (optional)"
+            caption="Upload new ad (optional)"
             accept="image/*"
             maxSize={100 * 1024 * 1024}
             error={errors.url?.message as string}
@@ -189,7 +189,7 @@ const UpdateAdModal = () => {
           />
 
           <Button type="submit" className="w-full">
-            Update Ad
+           {  isLoading? 'Loading...':'Update Ad'}
           </Button>
         </form>
       </DialogContent>

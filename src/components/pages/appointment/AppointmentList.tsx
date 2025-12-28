@@ -27,6 +27,9 @@ import {
   User,
   Mail,
   Users,
+  CalendarDays,
+  Phone,
+  Contact,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -169,7 +172,7 @@ const AppointmentList = ({
                     </TableRow>
                   ))}
                   {appointment && (
-                    <DialogContent className="max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+ <DialogContent className="max-w-3xl w-full max-h-[90vh] overflow-y-auto">
                       {/* Header Section */}
                       <DialogTitle className="sr-only">
                         Appointment Details
@@ -184,20 +187,25 @@ const AppointmentList = ({
                           <AvatarFallback className="text-lg font-semibold bg-primary/10 text-primary">
                             {appointment.name
                               ?.split(" ")
-                              .map((n: any) => n[0])
+                              .map((n: string) => n[0])
                               .join("")
                               .toUpperCase() || "JD"}
                           </AvatarFallback>
                         </Avatar>
+
                         <div className="flex-1">
                           <h2 className="text-2xl font-bold text-foreground">
                             {appointment.name}
                           </h2>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {appointment.title}
+                          </p>
                           <p className="text-muted-foreground flex items-center gap-2 mt-1">
                             <Mail className="w-4 h-4" />
                             {appointment.email}
                           </p>
                         </div>
+
                         <Badge
                           variant={
                             appointment.status === "complete"
@@ -220,6 +228,7 @@ const AppointmentList = ({
                             <Calendar className="w-5 h-5 text-primary" />
                             Schedule
                           </h3>
+
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-7">
                             <div className="flex items-center gap-3">
                               <div className="w-2 h-2 bg-primary rounded-full"></div>
@@ -232,6 +241,7 @@ const AppointmentList = ({
                                 </p>
                               </div>
                             </div>
+
                             <div className="flex items-center gap-3">
                               <Clock className="w-4 h-4 text-muted-foreground" />
                               <div>
@@ -240,6 +250,22 @@ const AppointmentList = ({
                                 </p>
                                 <p className="font-medium">
                                   {appointment.timeSlot}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                              <CalendarDays className="w-4 h-4 text-muted-foreground" />
+                              <div>
+                                <p className="text-sm text-muted-foreground">
+                                  Created On
+                                </p>
+                                <p className="font-medium">
+                                  {appointment.UTCDate
+                                    ? new Date(
+                                        appointment.UTCDate
+                                      ).toLocaleDateString()
+                                    : "-"}
                                 </p>
                               </div>
                             </div>
@@ -254,6 +280,7 @@ const AppointmentList = ({
                             <User className="w-5 h-5 text-primary" />
                             Personal Information
                           </h3>
+
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-7">
                             <div className="flex items-center gap-3">
                               <Users className="w-4 h-4 text-muted-foreground" />
@@ -266,6 +293,31 @@ const AppointmentList = ({
                                 </p>
                               </div>
                             </div>
+
+                            <div className="flex items-center gap-3">
+                              <Phone className="w-4 h-4 text-muted-foreground" />
+                              <div>
+                                <p className="text-sm text-muted-foreground">
+                                  Phone Number
+                                </p>
+                                <p className="font-medium">
+                                  {appointment.number}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                              <Contact className="w-4 h-4 text-muted-foreground" />
+                              <div>
+                                <p className="text-sm text-muted-foreground">
+                                  Best Contact
+                                </p>
+                                <p className="font-medium">
+                                  {appointment.bestContact}
+                                </p>
+                              </div>
+                            </div>
+
                             <div className="flex items-center gap-3">
                               <div className="w-4 h-4 flex items-center justify-center">
                                 <div className="w-2 h-2 bg-muted-foreground rounded-full"></div>
@@ -295,6 +347,7 @@ const AppointmentList = ({
                             <DollarSign className="w-5 h-5 text-primary" />
                             Financial Details
                           </h3>
+
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-7">
                             <div className="flex items-center gap-3">
                               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -303,10 +356,11 @@ const AppointmentList = ({
                                   Approximate Income
                                 </p>
                                 <p className="font-medium text-green-600">
-                                  ${appointment.approxIncome?.toLocaleString()}
+                                  £{appointment.approxIncome?.toLocaleString()}
                                 </p>
                               </div>
                             </div>
+
                             <div className="flex items-center gap-3">
                               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
                               <div>
@@ -314,7 +368,7 @@ const AppointmentList = ({
                                   Investment Amount
                                 </p>
                                 <p className="font-medium text-blue-600">
-                                  ${appointment.investment?.toLocaleString()}
+                                  £{appointment.investment?.toLocaleString()}
                                 </p>
                               </div>
                             </div>
@@ -329,15 +383,21 @@ const AppointmentList = ({
                             <MessageSquare className="w-5 h-5 text-primary" />
                             Discussion Topics
                           </h3>
+
                           <div className="space-y-4 ml-7">
-                            <div>
-                              <p className="text-sm text-muted-foreground mb-2">
-                                Topics to Discuss
-                              </p>
-                              <div className="bg-muted/50 rounded-lg p-3">
-                                <p className="text-sm">{appointment.discuss}</p>
+                            {appointment.discuss && (
+                              <div>
+                                <p className="text-sm text-muted-foreground mb-2">
+                                  Topics to Discuss
+                                </p>
+                                <div className="bg-muted/50 rounded-lg p-3">
+                                  <p className="text-sm">
+                                    {appointment.discuss}
+                                  </p>
+                                </div>
                               </div>
-                            </div>
+                            )}
+
                             <div>
                               <p className="text-sm text-muted-foreground mb-2 flex items-center gap-2">
                                 <Target className="w-4 h-4" />
@@ -349,6 +409,7 @@ const AppointmentList = ({
                                 </p>
                               </div>
                             </div>
+
                             <div>
                               <p className="text-sm text-muted-foreground mb-2">
                                 Questions to Ask
@@ -370,18 +431,22 @@ const AppointmentList = ({
                         >
                           Close
                         </Button>
+
                         <Button
                           className="px-6"
+                          disabled={appointment.status === "complete"}
                           onClick={() =>
                             handelCompleteAppointment(appointment._id)
                           }
                         >
-                          Complete
+                          {appointment.status === "complete"
+                            ? "Completed"
+                            : "Complete"}
                         </Button>
                       </div>
                     </DialogContent>
                   )}
-                </Dialog>
+              </Dialog>
               </TableBody>
             </Table>
           </div>

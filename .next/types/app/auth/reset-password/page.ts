@@ -1,4 +1,4 @@
-// File: C:\Users\mdrif\Desktop\projects\finance-management-dashboard\src\app\auth\reset-password\page.tsx
+// File: /var/www/finance-management-dashboard/src/app/auth/reset-password/page.tsx
 import * as entry from '../../../../../src/app/auth/reset-password/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
